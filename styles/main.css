@@ -377,9 +377,9 @@ body {
 }
 .masthead header h1 a {
   color: #444444;
-  -webkit-transition: color 0.2s ease-in-out;
-  -moz-transition: color 0.2s ease-in-out;
-  transition: color 0.2s ease-in-out;
+  -webkit-transition: color 0.25s ease-in-out;
+  -moz-transition: color 0.25s ease-in-out;
+  transition: color 0.25s ease-in-out;
 }
 .masthead header h1 a:hover {
   color: #793501;
@@ -393,9 +393,9 @@ section.main > article > header h1 {
 }
 section.main > article > header h1 a {
   color: #444444;
-  -webkit-transition: color 0.2s ease-in-out;
-  -moz-transition: color 0.2s ease-in-out;
-  transition: color 0.2s ease-in-out;
+  -webkit-transition: color 0.25s ease-in-out;
+  -moz-transition: color 0.25s ease-in-out;
+  transition: color 0.25s ease-in-out;
 }
 section.main > article > header h1 a:hover {
   color: #ac4b01;
@@ -616,6 +616,9 @@ section.main kbd {
   width: 1.25rem;
   padding: .5rem .65rem;
   cursor: pointer;
+  -webkit-transition: all 0.25s ease-in-out;
+  -moz-transition: all 0.25s ease-in-out;
+  transition: all 0.25s ease-in-out;
 }
 .sidebar-toggle:before {
   font-size: 16px;
@@ -661,9 +664,9 @@ section.main kbd {
   content: "";
 }
 .sidebar-wrap {
-  -webkit-transition: left 0.3s ease-in-out;
-  -moz-transition: left 0.3s ease-in-out;
-  transition: left 0.3s ease-in-out;
+  -webkit-transition: left 0.25s ease-in-out;
+  -moz-transition: left 0.25s ease-in-out;
+  transition: left 0.25s ease-in-out;
 }
 .sidebar {
   background-color: rgba(32, 32, 32, 0.95);
@@ -697,15 +700,13 @@ section.main kbd {
   background-color: #fff;
   border-radius: 4px;
 }
-.sidebar-toggle:active,
+/* .sidebar-toggle:active, */
 #sidebar-checkbox:checked ~ .wrap .sidebar-toggle {
   color: #fff;
   background-color: #505050;
+  right: .5rem;
 }
-/* #sidebar-checkbox:checked ~ .wrap .sidebar {
-  box-shadow: -1rem 0 8rem 0rem #000 inset,
-              0 0 5rem #888;
-  border-right: .1rem solid #888;
-
-
-} */
+/* @media only screen and (max-width: 480px) { */
+/* left: -@sidebar-width - 3rem; */
+/* width: @sidebar-width; */
+/* } */
