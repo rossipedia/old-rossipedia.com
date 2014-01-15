@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dependency Injection considered harmful? Not so fast. - Rossipedia</title>
+    <link rel="shortcut icon" href="http://www.gravatar.com/avatar/74c4a12ee78a7e49b8333a6c78aae47c.png">
+    <link rel="stylesheet" type="text/css" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/hl/github.css">
+    <script type="text/javascript" src="/scripts/ender.js"></script>
+    <link rel="canonical" href="http://rossipedia.com/blog/2013/08/dependency-injection-considered-harmful-not-so-fast-">
+  </head>
+  <body>
+    <input type="checkbox" id="sidebar-checkbox" class="sidebar-checkbox">
+    <section class="wrap">
+      <section class="masthead">
+        <header role="banner" class="container">
+          <h1><a href="/">Rossipedia</a></h1>
+          <h2>Code, music, and other junk</h2>
+        </header>
+      </section>
+      <section class="main container">
+        <article>
+          <header>
+            <h1><a href="/blog/2013/08/dependency-injection-considered-harmful-not-so-fast-">Dependency Injection considered harmful? Not so fast.</a></h1>
+            <time datetime="2013-08-31T16:29:00.000Z">Aug 31 2013</time><a rel="author">Bryan J. Ross</a>
+          </header>
+          <section class="content"><p>A question came up on StackOverflow today:</p>
+<blockquote>
+<p><a href="http://stackoverflow.com/questions/18547909/what-would-be-the-most-powerful-argument-for-writing-solid-applications">What would be the most powerful argument for writing SOLID applications?</a></p>
+</blockquote>
+<p>One of the comments on this question caused a bit of a stir on
+Twitter, as it was made by <a href="http://ericlippert.com/">Eric Lippert</a>, who was on the C# team at
+Microsoft for quite some time. Normally I agree with pretty much
+everything he writes. But not this time.</p>
+<!-- more -->
+
+<p>His comment states:</p>
+<blockquote>
+<p>There is no killer argument for DI because DI is basically a bad
+idea. The idea of DI is that you take what ought to be
+implementation details of a class and then allow the user of the
+class to determine those implementation details. This means that the
+author of the class no longer has control over the correctness or
+performance or reliability of the class; that control is put into
+the hands of the caller, who does not know enough about the internal
+implementation details of the class to make a good choice.</p>
+</blockquote>
+<p>Now, Eric Lippert is a smart guy. Like, <em>scary</em> smart. His knowledge
+of C# probably rivals that of Anders (Hejlsberg, creator of C#).
+However, I have an issue with his argument, as it misses the big
+picture.</p>
+<p>As you may or may not know, <a href="http://en.wikipedia.org/wiki/SOLID_(object-oriented_design)#cite_note-ub-old-web-solid-1">SOLID</a> is a set of principles guiding the
+design and architecture of software, introduced by Robert C
+Martin, AKA &quot;Uncle Bob&quot; (original article <a href="http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod">here</a>).</p>
+<p>The problem with Eric&#39;s comment is that it only addresses a single
+point of the SOLID principle: the &quot;D&quot;, which stands for the Dependency
+Inversion Principle, which states one should depend on abstractions
+rather than concretions. Taken in isolation, the comment actually
+makes sense. But SOLID isn&#39;t about isolation. It&#39;s about applying
+<em>all</em> it&#39;s principles.</p>
+<p>Let&#39;s take a few points in order:</p>
+<blockquote>
+<p>This means that the author of the class no longer has control over
+the correctness or performance or reliability of the class</p>
+</blockquote>
+<p>If you apply the rest of SOLID, then this doesn&#39;t really hold water,
+because:</p>
+<ul>
+<li>The class is only doing ONE well-defined thing (SRP)</li>
+<li>The dependencies that are being injected are doing one thing that is
+well defined (SRP and ISP)</li>
+<li>Any implementation of those dependencies will be correct (LSP)</li>
+</ul>
+<p>(OCP doesn&#39;t really apply here to this, as it sort of comes as a result of
+ applying the other principles well and guides their implementation).</p>
+<blockquote>
+<p>; that control is put into the hands of the caller, who does not know
+enough about the internal implementation details of the class to
+make a good choice</p>
+</blockquote>
+<p>I also don&#39;t agree with this, because the whole point here is that
+dependencies of a class, if designed well, have NO knowledge of what
+class depends on them, and shouldn&#39;t have to. There&#39;s no
+choice to be made.</p>
+<p>With SOLID, you have four other principles that also guide your
+architecture. These principles work together to form a single
+methodology that has been proven many times over. If you pick just
+one, or leave one out, then all bets are off.</p>
+
+          </section>
+          <section class="comments">
+            <div id="disqus_thread"></div>
+          </section>
+        </article>
+      </section>
+      <footer class="container">
+        <ul class="nav">
+          <li><a href="/blog/2013/06/ergodox-mechanical-keyboard-review">&lt;</a></li>
+          <li><a href="/blog/">Archives</a></li>
+          <li><a disabled="disabled">&gt;</a></li>
+        </ul><p>&copy; 2014 content and design by
+<a href="href=&quot;http://rossipedia.com&quot;">Bryan J. Ross</a></p>
+
+      </footer>
+      <section class="sidebar-wrap">
+        <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+        <section class="sidebar">
+          <aside>
+            <p>Code MacGuyver @ <a href="http://stackexchange.com" target="_blank">StackExchange</a></p>
+            <p>I've been known to play and record music.</p>
+          </aside>
+          <section class="search">
+            <form action="http://google.com/search" method="get" class="search">
+              <input type="hidden" name="q" value="site:rossipedia.com">
+              <input type="text" name="q" placeholder="Search..." class="search"><span class="rss"><a href="atom.xml" title="Subscribe to the RSS feed">RSS</a></span>
+            </form>
+          </section>
+          <section>
+            <h2>Recent Posts<a href="/blog/">&nbsp;- more</a></h2>
+            <nav class="recent">
+              <ul>
+                <li><a href="/blog/2013/08/dependency-injection-considered-harmful-not-so-fast-">Dependency Injection considered harmful? Not so fast.</a></li>
+                <li><a href="/blog/2013/06/ergodox-mechanical-keyboard-review">ErgoDox Mechanical Keyboard Review</a></li>
+                <li><a href="/blog/2013/03/elmah-emails-and-servicestack">Elmah, Emails, and ServiceStack</a></li>
+                <li><a href="/blog/2013/03/simple-api-key-authentication-with-servicestack">Simple API Key Authentication with ServiceStack</a></li>
+                <li><a href="/blog/2013/02/integration-testing-with-servicestack">Integration Testing with ServiceStack</a></li>
+                <li><a href="/blog/">More...</a></li>
+              </ul>
+            </nav>
+          </section>
+          <section class="stackoverflow"><a href="http://stackoverflow.com/users/115049/rossipedia"><img src="http://stackoverflow.com/users/flair/115049.png?theme=dark" width="208" height="58" alt="profile for rossipedia at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for rossipedia at Stack Overflow, Q&amp;A for professional and enthusiast programmers"></a></section>
+          <section>
+            <h2><a href="http://github.com/rossipedia">@rossipedia on GitHub</a></h2>
+            <nav class="repos">
+              <ul id="gh_repos">
+                <li class="loading"><a>Status updating...</a></li>
+              </ul>
+            </nav>
+            <script type="text/javascript" src="/scripts/github.js"></script>
+          </section><a href="https://twitter.com/rossipedia" data-widget-id="381923369030934528" class="twitter-timeline">Tweets by @rossipedia</a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+        </section>
+      </section>
+    </section>
+    <script src="/scripts/hl/highlight.pack.js"></script>
+    <script type="text/javascript" src="/scripts/rossipedia.js"></script>
+  </body>
+</html>

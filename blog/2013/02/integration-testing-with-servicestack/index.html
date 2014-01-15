@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Integration Testing with ServiceStack - Rossipedia</title>
+    <link rel="shortcut icon" href="http://www.gravatar.com/avatar/74c4a12ee78a7e49b8333a6c78aae47c.png">
+    <link rel="stylesheet" type="text/css" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/hl/github.css">
+    <script type="text/javascript" src="/scripts/ender.js"></script>
+    <link rel="canonical" href="http://rossipedia.com/blog/2013/02/integration-testing-with-servicestack">
+  </head>
+  <body>
+    <input type="checkbox" id="sidebar-checkbox" class="sidebar-checkbox">
+    <section class="wrap">
+      <section class="masthead">
+        <header role="banner" class="container">
+          <h1><a href="/">Rossipedia</a></h1>
+          <h2>Code, music, and other junk</h2>
+        </header>
+      </section>
+      <section class="main container">
+        <article>
+          <header>
+            <h1><a href="/blog/2013/02/integration-testing-with-servicestack">Integration Testing with ServiceStack</a></h1>
+            <time datetime="2013-02-28T05:31:00.000Z">Feb 27 2013</time><a rel="author">Bryan J. Ross</a>
+          </header>
+          <section class="content"><p>I&#39;m doing a lot of <a href="http://servicestack.net">ServiceStack</a> development these days, and
+loving every minute of it.</p>
+<p>One of the things I wanted with my integration tests was a controlled
+environment. I wanted to be able to set the connection string for the
+test database, and run full-stack tests on my services using
+<a href="http://www.nunit.org">NUnit</a> via <a href="http://www.jetbrains.com/resharper/">ReSharper</a>&#39;s test runner. However, I also wanted to
+be able to step through (F11) seamlessly from a given test case to the
+service code without missing a beat. Since my services were configured
+to run under ASP.NET/IIS, that last part required some thought.</p>
+<!-- more -->
+
+<p>To get this all to work was actually pretty simple. The trick lies in
+getting a Self-hosted AppHost to get set up using the same code as the
+ASP.NET-based AppHost. Since ServiceStack requires an
+inheritance-based approach (you derive from either <code>AppHostBase</code> or
+<code>AppHostHttpListenerBase</code>, which happen to be completely unrelated
+except they both implement <code>IAppHost</code>, which isn&#39;t quite suitable for
+our purposes), I went with static methods.</p>
+<p><em>NOTE</em>: As pointed out by <a href="https://plus.google.com/117201192611184809497/posts/euVcrpLb5nW">Wayne Brantley</a>, this approach requires
+Visual Studio to be run as Administrator, as opening a port requires
+elevated privileges.</p>
+<p>First, set up the AppHosts:</p>
+<pre><code class="lang-csharp">// The ASP.NET/IIS app host
+public class WebAppHost : AppHostBase
+{
+  private readonly string connString;
+
+  public WebAppHost()
+    : this(AppSettings.ConnectionString)
+  {
+  }
+
+  public WebAppHost(string connString)
+    : base(&quot;My Service&quot;, typeof(WebAppHost).Assembly)
+  {
+    this.connString = connString;
+  }
+
+  public override void Configure(Container container)
+  {
+    AppHostCommon.Init(container, this.connString);
+    this.SetConfig(AppHostCommon.GetConfig());
+    this.Plugins.AddRange(AppHostCommon.GetPlugins());
+  }
+}
+
+// The Self-Host AppHost
+public class SelfAppHost : AppHostHttpListenerBase
+{
+  public WebAppHost()
+    : this(AppSettings.ConnectionString)
+  {
+  }
+
+  public WebAppHost(string connString)
+    : base(&quot;My Service&quot;, typeof(WebAppHost).Assembly)
+  {
+    this.connString = connString;
+  }
+
+  public override void Configure(Container container)
+  {
+    AppHostCommon.Init(container, this.connString);
+    this.SetConfig(AppHostCommon.GetConfig());
+    this.Plugins.AddRange(AppHostCommon.GetPlugins());
+  }
+}
+</code></pre>
+<p>You&#39;ll notice that except for the names of the these classes, and the
+specific base-classes, the code is exactly the same for each one. This
+is due to the fact that AppHostBase and AppHostHttpListenerBase handle
+completely separate problem domains, and are technically completely
+different classes (event though they look the same and fill similar
+roles).</p>
+<p>And for the AppHostCommon class:</p>
+<pre><code class="lang-csharp">public static class AppHostCommon
+{
+  public static void Init(Container container, string connString)
+  {
+    container.Register&lt;IDbConnectionFactory&gt;(c =&gt; new OrmLiteDbConnectionFactory(
+         connectionString:  connString,
+         autoDisposeConnection: true,
+         dialectProvider: OrmLiteConfig.DialectProvider));
+  }
+
+  public static EndpointHostConfig GetConfig()
+  {
+    return new EndpointHostConfig
+    {
+      EnableFeatures = Feature.All.Remove(Feature.Xml | Feature.Soap),
+      DebugMode = true,
+      DefaultContentType = ContentType.Json
+    };
+  }
+
+  public static IEnumerable&lt;IPlugin&gt; GetPlugins()
+  {
+    yield return new ValidationFeature();
+  }
+}
+</code></pre>
+<p>Obviously you can configure it how you like, but the important part is
+that it&#39;s centralized out of each app host class.</p>
+<p>So what does that give us? Well, now we can do something like this
+(using NUnit to manage the integration tests):</p>
+<pre><code class="lang-csharp">[SetUpFixture]
+public class GlobalTestSetup
+{
+  private SelfAppHost host;
+
+  [SetUp]
+  public void SetUp()
+  {
+    this.SetupTestDb();
+
+    this.host = new SelfAppHost(TestConfig.ConnString);
+    this.host.Init();
+    this.host.Start(TestConfig.TestHostUrl);
+  }
+
+  [TearDown]
+  public void TearDown()
+  {
+    this.host.Stop();
+  }
+
+
+  public void SetupTestDb()
+  {
+    OrmLiteConfig.DialectProvider = SqlServerOrmLiteDialectProvider.Instance;
+    using(var db = TestConfig.ConnString.OpenDbConnection())
+    {
+      db.DropAndCreateTable&lt;SomeDTO&gt;();
+    }
+  }
+}
+</code></pre>
+<p>In NUnit, the <code>[SetUpFixture]</code> attribute marks a class as a &quot;global&quot;
+test initializer (of sorts, read the NUnit docs for more information).</p>
+<p>This means that the <code>SetUp</code> method gets called before any test is run,
+and the <code>TearDown</code> method gets called after all tests have
+completed. As long as your given testing framework has something
+similar you&#39;re all good.</p>
+<p>So now, for each integration test, just make sure your service client
+uses the same base url that the SelfAppHost instance was started
+with:</p>
+<pre><code class="lang-csharp">[TestCase]
+public void ShouldDoSomethingNeat()
+{
+  var client = TestConfig.CreateServiceClient();
+  var response = client.Post(new SomeDTO());
+  // Assert various things about the response, or check the DB to
+  // ensure the DTO got inserted.
+}
+</code></pre>
+<p>The setup might be a little tedious, but it pays off in keeping
+everything nice and self-contained in your tests project. Plus, since
+the services are now being hosted in-process, you can step-through
+from client to server without breaking a sweat.</p>
+
+          </section>
+          <section class="comments">
+            <div id="disqus_thread"></div>
+          </section>
+        </article>
+      </section>
+      <footer class="container">
+        <ul class="nav">
+          <li><a href="/blog/2012/12/habit-driven-development">&lt;</a></li>
+          <li><a href="/blog/">Archives</a></li>
+          <li><a href="/blog/2013/03/simple-api-key-authentication-with-servicestack">&gt;</a></li>
+        </ul><p>&copy; 2014 content and design by
+<a href="href=&quot;http://rossipedia.com&quot;">Bryan J. Ross</a></p>
+
+      </footer>
+      <section class="sidebar-wrap">
+        <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+        <section class="sidebar">
+          <aside>
+            <p>Code MacGuyver @ <a href="http://stackexchange.com" target="_blank">StackExchange</a></p>
+            <p>I've been known to play and record music.</p>
+          </aside>
+          <section class="search">
+            <form action="http://google.com/search" method="get" class="search">
+              <input type="hidden" name="q" value="site:rossipedia.com">
+              <input type="text" name="q" placeholder="Search..." class="search"><span class="rss"><a href="atom.xml" title="Subscribe to the RSS feed">RSS</a></span>
+            </form>
+          </section>
+          <section>
+            <h2>Recent Posts<a href="/blog/">&nbsp;- more</a></h2>
+            <nav class="recent">
+              <ul>
+                <li><a href="/blog/2013/08/dependency-injection-considered-harmful-not-so-fast-">Dependency Injection considered harmful? Not so fast.</a></li>
+                <li><a href="/blog/2013/06/ergodox-mechanical-keyboard-review">ErgoDox Mechanical Keyboard Review</a></li>
+                <li><a href="/blog/2013/03/elmah-emails-and-servicestack">Elmah, Emails, and ServiceStack</a></li>
+                <li><a href="/blog/2013/03/simple-api-key-authentication-with-servicestack">Simple API Key Authentication with ServiceStack</a></li>
+                <li><a href="/blog/2013/02/integration-testing-with-servicestack">Integration Testing with ServiceStack</a></li>
+                <li><a href="/blog/">More...</a></li>
+              </ul>
+            </nav>
+          </section>
+          <section class="stackoverflow"><a href="http://stackoverflow.com/users/115049/rossipedia"><img src="http://stackoverflow.com/users/flair/115049.png?theme=dark" width="208" height="58" alt="profile for rossipedia at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for rossipedia at Stack Overflow, Q&amp;A for professional and enthusiast programmers"></a></section>
+          <section>
+            <h2><a href="http://github.com/rossipedia">@rossipedia on GitHub</a></h2>
+            <nav class="repos">
+              <ul id="gh_repos">
+                <li class="loading"><a>Status updating...</a></li>
+              </ul>
+            </nav>
+            <script type="text/javascript" src="/scripts/github.js"></script>
+          </section><a href="https://twitter.com/rossipedia" data-widget-id="381923369030934528" class="twitter-timeline">Tweets by @rossipedia</a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+        </section>
+      </section>
+    </section>
+    <script src="/scripts/hl/highlight.pack.js"></script>
+    <script type="text/javascript" src="/scripts/rossipedia.js"></script>
+  </body>
+</html>

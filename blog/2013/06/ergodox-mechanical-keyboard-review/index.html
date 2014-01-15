@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ErgoDox Mechanical Keyboard Review - Rossipedia</title>
+    <link rel="shortcut icon" href="http://www.gravatar.com/avatar/74c4a12ee78a7e49b8333a6c78aae47c.png">
+    <link rel="stylesheet" type="text/css" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/hl/github.css">
+    <script type="text/javascript" src="/scripts/ender.js"></script>
+    <link rel="canonical" href="http://rossipedia.com/blog/2013/06/ergodox-mechanical-keyboard-review">
+  </head>
+  <body>
+    <input type="checkbox" id="sidebar-checkbox" class="sidebar-checkbox">
+    <section class="wrap">
+      <section class="masthead">
+        <header role="banner" class="container">
+          <h1><a href="/">Rossipedia</a></h1>
+          <h2>Code, music, and other junk</h2>
+        </header>
+      </section>
+      <section class="main container">
+        <article>
+          <header>
+            <h1><a href="/blog/2013/06/ergodox-mechanical-keyboard-review">ErgoDox Mechanical Keyboard Review</a></h1>
+            <time datetime="2013-06-24T18:07:00.000Z">Jun 24 2013</time><a rel="author">Bryan J. Ross</a>
+          </header>
+          <section class="content"><p>The <a href="http://ergodox.org">ErgoDox</a> is a custom split-hand ergonomic
+mechanical keyboard project started by <a href="http://geekhack.org">GeekHack</a>
+forum member Dox, and contributed to and refined by many others. It
+was offered as a kit on <a href="http://www.massdrop.com">MassDrop</a> starting
+in early 2013. After demand for a second run increased, MassDrop
+offered a second group buy, which I jumped on and placed my order. As
+of this writing, MassDrop is running a <a href="https://www.massdrop.com/buy/ergodox">third group buy</a> for the ErgoDox.</p>
+<p>This is going to be a review of my time with the ErgoDox, from
+construction to roughly a week of use. My kit arrived on June 5th
+2013, but I wasn&#39;t able to construct the board until June 16th, due to
+the fact that 8 month old babies have an odd temporal vortex around
+them that somehow sucks in available free time like a black hole sucks
+in matter.</p>
+<p>Yup, I spent my first Father&#39;s Day constructing a keyboard. Nerd
+achievement unlocked.</p>
+<!-- more -->
+
+<p>Unfortunately I decided to write this review after finishing the
+board, so sorry for the lack of pictures.</p>
+<h2 id="build">Build</h2>
+<p>I purchased a FX888D soldering iron from Amazon for the build, and I
+already had a roll of solder, which worked find for the build. I
+followed along with WhiteFireDragons&#39;s <a href="http://www.youtube.com/watch?v=x1irVrAl3Ts">excellent video</a>,
+and had no problems. I&#39;m pretty sure I lucked way out as I had
+everything work perfectly the first time.</p>
+<h2 id="supplies">Supplies</h2>
+<ul>
+<li><a href="http://www.amazon.com/gp/product/B00AWUFVY8/ref=oh_details_o00_s00_i00?ie=UTF8&amp;psc=1">Hakko FX888D Digital Soldering Iron</a>
+(I used the stock tip it comes with)</li>
+<li>A roll of 60/40 0.032&quot; Rosin Core solder from Radio Shack</li>
+<li>Wire tip cleaner (the one that comes with the FX88D is fine)</li>
+<li>A pair of side cutters (if you get the iron off Amazon it comes with one)</li>
+<li>Tweezers (<em>REQUIRED</em> for SMDs in my opinion).</li>
+<li>(optional) A magnifying glass if your eyes aren&#39;t so good</li>
+<li>A ventilated work area.</li>
+</ul>
+<h2 id="construction">Construction</h2>
+<p>Construction was pretty simple: I just followed along the steps in the
+YouTube video. I did run across a few things I wanted to comment on
+though:</p>
+<p><strong>SMDs</strong>: These were fairly annoying. On the first PCBs these took me
+quite a while (about 3 hours, but that&#39;s with breaks and
+distractions). On the second PCB I got much faster results by
+soldering only one side of the SMDs for an entire row first, and then
+going back and soldering the 2nd lead.</p>
+<p>Soldering an individual SMD is fairly straightforward:</p>
+<ol>
+<li>Place a dab of solder on one of the pads.</li>
+<li>Place SMD on PCB, and apply tip of iron to the <em>lead</em>, not the pad,
+until you feel the SMD drop into the solder.</li>
+<li>Solder the 2nd lead.</li>
+</ol>
+<p><strong>Teensy 2.0 Micro Controller</strong>: The only thing to be wary of is when
+breaking apart the header pins make sure you apply the force
+correctly, as I ended up with a row that was one pin too short.
+Thankfully the box came with extras.</p>
+<p><strong>Micro USB Connector</strong>: Part of the construction of the
+ErgoDox requires cutting the male end off of a Micro USB cord and
+getting at the internals. In the YouTube video, WFD uses a Dremel
+rotary tool to do this, and I will say that if you have one, <strong>USE
+IT</strong>. I had no such tool, and had to use a combination of side cutters
+and needlenose pliers to extract the internals from the plastic
+casing. Not fun.</p>
+<p><strong>Resistors</strong>: Neither WFD&#39;s video, nor the
+<a href="http://www.massdrop.com/ext/ergodox/assembly/">instructions</a> on
+Massdrop explicitly clarify which resistors go where. As I am not an
+electrical engineer I had to go figure out which resistors were the
+2.2kΩ resistors (the one <em>without</em> the dark brown stripe), and which
+were the 220Ω resistors (the ones <em>with</em> the dark brown stripe). If in
+doubt, make your resistors look exactly like this (take note of the
+resistor stripes and orientation):</p>
+<p><img src="https://d3jqoivu6qpygv.cloudfront.net/img_bucket/ergodox/_W3T4003.jpg" alt="Resistors soldering positions"></p>
+<h2 id="final-assembly">Final Assembly</h2>
+<p>The case of the ErgoDox consists of 5 laser-cut layers of acrylic
+bolted together, and they arrive covered in protective paper adhered
+to each side, presumably to prevent chipping while the laser performs
+the cut. However, a couple of the layers did end up having chips
+anyways, and the paper was burnt in a few places. Not a deal breaker,
+as none of the plates were actually broken.</p>
+<p>However, one of the plates on the left side had a problem where the
+holes for the bolts hadn&#39;t been drilled out completely, and I had to
+pop out the left-over plastic burrs that were left in the holes. I
+also had to use a small phillips head screwdriver to bore out the
+holes until the provided bolts would actually fit.</p>
+<h2 id="programming-layout">Programming / Layout</h2>
+<p>Following the directions on MassDrop&#39;s assembly page for loading the
+firmware on to the board was fairly straightforward and I had no
+problem. Rather than repeat them, I&#39;ll link to MassDrop&#39;s page
+<a href="https://www.massdrop.com/ext/ergodox/assembly/#step-12">here</a>.</p>
+<p>I use a fairly sparse layout, which you can view
+<a href="https://www.massdrop.com/ext/ergodox/?referer=QJGS5L&amp;hash=dc58f1a2f9d5222910e05c6a03b9f90b">here</a>.</p>
+<h2 id="use">Use</h2>
+<p>I&#39;ve been using the ErgoDox for a little over a week now, and for
+normal typing (such as this post), I&#39;m back up to 100% speed. However,
+my <a href="http://careers.stackexchange.com">dayjob</a> requires writing a lot
+of code, and I&#39;d say that due to the special symbols that have to be
+used fairly consistently I&#39;m only back up to about 85% of normal
+speed.</p>
+<p>I put together my board with Cherry MX Clear switches, and replaced
+all the springs with 65g springs from
+<a href="https://www.originativeco.com/65g-springs">OriginativeCo</a>. These
+soften the switches every so slightly, and don&#39;t tire my fingers out
+as much as the standard clear springs (which I believe are 67g, but
+not sure).</p>
+<p>Typing on this board is <em>extremely</em> addicting. The fact that
+it is a completely vertical layout (as opposed to staggered like most
+standard keyboards) has made a huge difference in how i hold my
+hands and fingers (<em>especially</em> for the left hand, the difference is
+huge). my hands are more relaxed, and my shoulders are less tense.</p>
+<p>All in all, a great purchase and I&#39;m extremely happy with this board.
+At $200 for the bare board (add $37 for the
+<a href="http://keycapsdirect.com/key-caps.php">DSA</a> keycaps, and from $37-$50
+for the DCS keycaps) it&#39;s not for everyone. But if you&#39;re into high
+quality mechanical keyboards and like tinkering with electronics, then
+I&#39;d highly recommend it. The current group buy for the ErgoDox on
+MassDrop ends on June 30th, 2013.</p>
+
+          </section>
+          <section class="comments">
+            <div id="disqus_thread"></div>
+          </section>
+        </article>
+      </section>
+      <footer class="container">
+        <ul class="nav">
+          <li><a href="/blog/2013/03/elmah-emails-and-servicestack">&lt;</a></li>
+          <li><a href="/blog/">Archives</a></li>
+          <li><a href="/blog/2013/08/dependency-injection-considered-harmful-not-so-fast-">&gt;</a></li>
+        </ul><p>&copy; 2014 content and design by
+<a href="href=&quot;http://rossipedia.com&quot;">Bryan J. Ross</a></p>
+
+      </footer>
+      <section class="sidebar-wrap">
+        <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+        <section class="sidebar">
+          <aside>
+            <p>Code MacGuyver @ <a href="http://stackexchange.com" target="_blank">StackExchange</a></p>
+            <p>I've been known to play and record music.</p>
+          </aside>
+          <section class="search">
+            <form action="http://google.com/search" method="get" class="search">
+              <input type="hidden" name="q" value="site:rossipedia.com">
+              <input type="text" name="q" placeholder="Search..." class="search"><span class="rss"><a href="atom.xml" title="Subscribe to the RSS feed">RSS</a></span>
+            </form>
+          </section>
+          <section>
+            <h2>Recent Posts<a href="/blog/">&nbsp;- more</a></h2>
+            <nav class="recent">
+              <ul>
+                <li><a href="/blog/2013/08/dependency-injection-considered-harmful-not-so-fast-">Dependency Injection considered harmful? Not so fast.</a></li>
+                <li><a href="/blog/2013/06/ergodox-mechanical-keyboard-review">ErgoDox Mechanical Keyboard Review</a></li>
+                <li><a href="/blog/2013/03/elmah-emails-and-servicestack">Elmah, Emails, and ServiceStack</a></li>
+                <li><a href="/blog/2013/03/simple-api-key-authentication-with-servicestack">Simple API Key Authentication with ServiceStack</a></li>
+                <li><a href="/blog/2013/02/integration-testing-with-servicestack">Integration Testing with ServiceStack</a></li>
+                <li><a href="/blog/">More...</a></li>
+              </ul>
+            </nav>
+          </section>
+          <section class="stackoverflow"><a href="http://stackoverflow.com/users/115049/rossipedia"><img src="http://stackoverflow.com/users/flair/115049.png?theme=dark" width="208" height="58" alt="profile for rossipedia at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for rossipedia at Stack Overflow, Q&amp;A for professional and enthusiast programmers"></a></section>
+          <section>
+            <h2><a href="http://github.com/rossipedia">@rossipedia on GitHub</a></h2>
+            <nav class="repos">
+              <ul id="gh_repos">
+                <li class="loading"><a>Status updating...</a></li>
+              </ul>
+            </nav>
+            <script type="text/javascript" src="/scripts/github.js"></script>
+          </section><a href="https://twitter.com/rossipedia" data-widget-id="381923369030934528" class="twitter-timeline">Tweets by @rossipedia</a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+        </section>
+      </section>
+    </section>
+    <script src="/scripts/hl/highlight.pack.js"></script>
+    <script type="text/javascript" src="/scripts/rossipedia.js"></script>
+  </body>
+</html>

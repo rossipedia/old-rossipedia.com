@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>The tweet rule - Rossipedia</title>
+    <link rel="shortcut icon" href="http://www.gravatar.com/avatar/74c4a12ee78a7e49b8333a6c78aae47c.png">
+    <link rel="stylesheet" type="text/css" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/hl/github.css">
+    <script type="text/javascript" src="/scripts/ender.js"></script>
+    <link rel="canonical" href="http://rossipedia.com/blog/2012/12/the-tweet-rule">
+  </head>
+  <body>
+    <input type="checkbox" id="sidebar-checkbox" class="sidebar-checkbox">
+    <section class="wrap">
+      <section class="masthead">
+        <header role="banner" class="container">
+          <h1><a href="/">Rossipedia</a></h1>
+          <h2>Code, music, and other junk</h2>
+        </header>
+      </section>
+      <section class="main container">
+        <article>
+          <header>
+            <h1><a href="/blog/2012/12/the-tweet-rule">The tweet rule</a></h1>
+            <time datetime="2012-12-11T07:00:00.000Z">Dec 11 2012</time><a rel="author">Bryan J. Ross</a>
+          </header>
+          <section class="content"><p>I ran across this lovely little interface method today:</p>
+<pre><code class="lang-csharp">public interface IOrderProcessor
+{
+  TransactionResponse CreateOrder(
+      Cart cart,
+      string email,
+      Payment payment,
+      Address billingAddress,
+      Address shippingAddress,
+      string notes,
+      int orderId);
+}
+</code></pre>
+<!-- more -->
+
+<p>Aside from the glaring <a href="http://en.wikipedia.org/wiki/Single_responsibility_principle">SRP</a> violations, the main thing about this
+method is it&#39;s length. Holy god is it long. I immediately wondered if
+I could tweet it. Just as I thought: no dice.</p>
+<p>It struck me that maybe that was a pretty good guideline. Twitter&#39;s
+made a massive (and I mean ungodly huge) business off of 140
+characters. That seems to be a good indication of the attention span
+of the human race, so it seems that it&#39;s a good indication of whether
+your method signature is too long.</p>
+<p>So as of now I&#39;m going to adopt the Tweet Rule&trade;:</p>
+<blockquote>
+<p>If your method signature is too long to fit in a tweet, then it&#39;s
+too long.</p>
+</blockquote>
+<p>I&#39;m going to strive to keep all my methods obeying this rule, as well
+as under 10 statements in length (roughly). It will be interesting to
+see how these limitations affect the way I solve problems in code.</p>
+
+          </section>
+          <section class="comments">
+            <div id="disqus_thread"></div>
+          </section>
+        </article>
+      </section>
+      <footer class="container">
+        <ul class="nav">
+          <li><a href="/blog/2012/11/resharper-virtualquickfix-plugin">&lt;</a></li>
+          <li><a href="/blog/">Archives</a></li>
+          <li><a href="/blog/2012/12/the-art-of-forgetting">&gt;</a></li>
+        </ul><p>&copy; 2014 content and design by
+<a href="href=&quot;http://rossipedia.com&quot;">Bryan J. Ross</a></p>
+
+      </footer>
+      <section class="sidebar-wrap">
+        <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+        <section class="sidebar">
+          <aside>
+            <p>Code MacGuyver @ <a href="http://stackexchange.com" target="_blank">StackExchange</a></p>
+            <p>I've been known to play and record music.</p>
+          </aside>
+          <section class="search">
+            <form action="http://google.com/search" method="get" class="search">
+              <input type="hidden" name="q" value="site:rossipedia.com">
+              <input type="text" name="q" placeholder="Search..." class="search"><span class="rss"><a href="atom.xml" title="Subscribe to the RSS feed">RSS</a></span>
+            </form>
+          </section>
+          <section>
+            <h2>Recent Posts<a href="/blog/">&nbsp;- more</a></h2>
+            <nav class="recent">
+              <ul>
+                <li><a href="/blog/2013/08/dependency-injection-considered-harmful-not-so-fast-">Dependency Injection considered harmful? Not so fast.</a></li>
+                <li><a href="/blog/2013/06/ergodox-mechanical-keyboard-review">ErgoDox Mechanical Keyboard Review</a></li>
+                <li><a href="/blog/2013/03/elmah-emails-and-servicestack">Elmah, Emails, and ServiceStack</a></li>
+                <li><a href="/blog/2013/03/simple-api-key-authentication-with-servicestack">Simple API Key Authentication with ServiceStack</a></li>
+                <li><a href="/blog/2013/02/integration-testing-with-servicestack">Integration Testing with ServiceStack</a></li>
+                <li><a href="/blog/">More...</a></li>
+              </ul>
+            </nav>
+          </section>
+          <section class="stackoverflow"><a href="http://stackoverflow.com/users/115049/rossipedia"><img src="http://stackoverflow.com/users/flair/115049.png?theme=dark" width="208" height="58" alt="profile for rossipedia at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for rossipedia at Stack Overflow, Q&amp;A for professional and enthusiast programmers"></a></section>
+          <section>
+            <h2><a href="http://github.com/rossipedia">@rossipedia on GitHub</a></h2>
+            <nav class="repos">
+              <ul id="gh_repos">
+                <li class="loading"><a>Status updating...</a></li>
+              </ul>
+            </nav>
+            <script type="text/javascript" src="/scripts/github.js"></script>
+          </section><a href="https://twitter.com/rossipedia" data-widget-id="381923369030934528" class="twitter-timeline">Tweets by @rossipedia</a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+        </section>
+      </section>
+    </section>
+    <script src="/scripts/hl/highlight.pack.js"></script>
+    <script type="text/javascript" src="/scripts/rossipedia.js"></script>
+  </body>
+</html>

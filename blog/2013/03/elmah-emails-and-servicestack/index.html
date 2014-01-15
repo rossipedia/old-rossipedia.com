@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Elmah, Emails, and ServiceStack - Rossipedia</title>
+    <link rel="shortcut icon" href="http://www.gravatar.com/avatar/74c4a12ee78a7e49b8333a6c78aae47c.png">
+    <link rel="stylesheet" type="text/css" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/hl/github.css">
+    <script type="text/javascript" src="/scripts/ender.js"></script>
+    <link rel="canonical" href="http://rossipedia.com/blog/2013/03/elmah-emails-and-servicestack">
+  </head>
+  <body>
+    <input type="checkbox" id="sidebar-checkbox" class="sidebar-checkbox">
+    <section class="wrap">
+      <section class="masthead">
+        <header role="banner" class="container">
+          <h1><a href="/">Rossipedia</a></h1>
+          <h2>Code, music, and other junk</h2>
+        </header>
+      </section>
+      <section class="main container">
+        <article>
+          <header>
+            <h1><a href="/blog/2013/03/elmah-emails-and-servicestack">Elmah, Emails, and ServiceStack</a></h1>
+            <time datetime="2013-03-10T16:00:00.000Z">Mar 10 2013</time><a rel="author">Bryan J. Ross</a>
+          </header>
+          <section class="content"><p>As you can probably tell, I love <a href="http://servicestack.net">ServiceStack</a>. I also love
+<a href="https://code.google.com/p/elmah/">Elmah</a>, especially the the email notifications that it provides.</p>
+<p>However, the two don&#39;t really talk to each other out of the box. Sure,
+ServiceStack offers a <code>ElmahLogFactory</code> for handling errors and the
+like, and that works fine. But that only writes to the configured log.
+Emails are nowhere to be found. At least not in my project.</p>
+<!-- more -->
+
+<p>After doing some digging, I discovered that because all my response
+DTOs were marked with <code>IHasResponseStatus</code>, ServiceStack was helpfully
+catching all my exceptions and serializing them into the
+<code>ResponseStatus</code> property. But this was all happening inside of
+ServiceStack&#39;s request life-cycle. And since Elmah&#39;s <code>ErrorMail</code> setup
+is implemented via an <code>HttpModule</code>, those exceptions never got a
+chance to bubble up to that module. Hence, no emails.</p>
+<p>So, how do we get around this? It&#39;s quite simple, actually:</p>
+<pre><code class="lang-csharp">// Global.asax.cs
+using System;
+using System.Reflection;
+using System.Web;
+
+using Elmah;
+
+using ServiceStack.ServiceHost;
+
+public class Application : HttpApplication
+{
+    private AppHost appHost;
+
+    private MailModuleHandler mailHandler;
+
+    private delegate void MailModuleHandler(Exception ex, HttpContext context);
+
+    protected void Application_Start(object sender, EventArgs e)
+    {
+        // This needs to match what name is set in Web.config
+        // under system.web/httpModules, or system.webServer/modules
+        var mailModule = (ErrorMailModule)this.Modules[&quot;ErrorMail&quot;];
+        var onErrorMethod = typeof(ErrorMailModule).GetMethod(
+                &quot;OnError&quot;,
+                BindingFlags.Instance | BindingFlags.NonPublic,
+                null,
+                new[] { typeof(Exception), typeof(HttpContext) },
+                null);
+
+        this.mailHandler = (MailModuleHandler)onErrorMethod.CreateDelegate(
+                typeof(MailModuleHandler),
+                mailModule);
+
+        this.appHost = new AppHost();
+        this.appHost.Init();
+        this.appHost.ServiceExceptionHandler = this.HandleServiceException;
+    }
+
+    private object HandleServiceException(object request, Exception ex)
+    {
+        this.mailHandler(ex, HttpContext.Current);
+        return DtoUtils.HandleException(this.appHost, request, ex);
+    }
+}
+</code></pre>
+<p>If Elmah had made that <code>OnError</code> method public, then this would be
+quite trivial actually, but since it&#39;s internal, we have to use some
+reflection to get our paws on it.</p>
+<p>And it really is as simple as that. Elmah will send out emails just
+like you&#39;re already used to, with the same configuration settings and
+filtering and all that good stuff.</p>
+
+          </section>
+          <section class="comments">
+            <div id="disqus_thread"></div>
+          </section>
+        </article>
+      </section>
+      <footer class="container">
+        <ul class="nav">
+          <li><a href="/blog/2013/03/simple-api-key-authentication-with-servicestack">&lt;</a></li>
+          <li><a href="/blog/">Archives</a></li>
+          <li><a href="/blog/2013/06/ergodox-mechanical-keyboard-review">&gt;</a></li>
+        </ul><p>&copy; 2014 content and design by
+<a href="href=&quot;http://rossipedia.com&quot;">Bryan J. Ross</a></p>
+
+      </footer>
+      <section class="sidebar-wrap">
+        <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+        <section class="sidebar">
+          <aside>
+            <p>Code MacGuyver @ <a href="http://stackexchange.com" target="_blank">StackExchange</a></p>
+            <p>I've been known to play and record music.</p>
+          </aside>
+          <section class="search">
+            <form action="http://google.com/search" method="get" class="search">
+              <input type="hidden" name="q" value="site:rossipedia.com">
+              <input type="text" name="q" placeholder="Search..." class="search"><span class="rss"><a href="atom.xml" title="Subscribe to the RSS feed">RSS</a></span>
+            </form>
+          </section>
+          <section>
+            <h2>Recent Posts<a href="/blog/">&nbsp;- more</a></h2>
+            <nav class="recent">
+              <ul>
+                <li><a href="/blog/2013/08/dependency-injection-considered-harmful-not-so-fast-">Dependency Injection considered harmful? Not so fast.</a></li>
+                <li><a href="/blog/2013/06/ergodox-mechanical-keyboard-review">ErgoDox Mechanical Keyboard Review</a></li>
+                <li><a href="/blog/2013/03/elmah-emails-and-servicestack">Elmah, Emails, and ServiceStack</a></li>
+                <li><a href="/blog/2013/03/simple-api-key-authentication-with-servicestack">Simple API Key Authentication with ServiceStack</a></li>
+                <li><a href="/blog/2013/02/integration-testing-with-servicestack">Integration Testing with ServiceStack</a></li>
+                <li><a href="/blog/">More...</a></li>
+              </ul>
+            </nav>
+          </section>
+          <section class="stackoverflow"><a href="http://stackoverflow.com/users/115049/rossipedia"><img src="http://stackoverflow.com/users/flair/115049.png?theme=dark" width="208" height="58" alt="profile for rossipedia at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for rossipedia at Stack Overflow, Q&amp;A for professional and enthusiast programmers"></a></section>
+          <section>
+            <h2><a href="http://github.com/rossipedia">@rossipedia on GitHub</a></h2>
+            <nav class="repos">
+              <ul id="gh_repos">
+                <li class="loading"><a>Status updating...</a></li>
+              </ul>
+            </nav>
+            <script type="text/javascript" src="/scripts/github.js"></script>
+          </section><a href="https://twitter.com/rossipedia" data-widget-id="381923369030934528" class="twitter-timeline">Tweets by @rossipedia</a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+        </section>
+      </section>
+    </section>
+    <script src="/scripts/hl/highlight.pack.js"></script>
+    <script type="text/javascript" src="/scripts/rossipedia.js"></script>
+  </body>
+</html>

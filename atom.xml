@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>Rossipedia</title>
+    <id>http://rossipedia.com</id>
+    <updated>2014-01-15T21:35:36Z</updated>
+    <author>
+        <name>Bryan J. Ross</name>
+        <email>bryan@rossipedia.com</email>
+    </author>
+    <rights>2014 Bryan Ross. All rights reserved.</rights>
+    <generator>Feed for Node.js</generator>
+    <entry>
+        <title type="html"><![CDATA[Dependency Injection considered harmful? Not so fast.]]></title>
+        <id>http://rossipedia.com/blog/2013/08/dependency-injection-considered-harmful-not-so-fast-</id>
+        <link href="http://rossipedia.com/blog/2013/08/dependency-injection-considered-harmful-not-so-fast-">
+        </link>
+        <updated>2013-08-31T16:29:00Z</updated>
+        <summary type="html"><![CDATA[<p>A question came up on StackOverflow today:</p>
+<blockquote>
+<p><a href="http://stackoverflow.com/questions/18547909/what-would-be-the-most-powerful-argument-for-writing-solid-applications">What would be the most powerful argument for writing SOLID applications?</a></p>
+</blockquote>
+<p>One of the comments on this question caused a bit of a stir on
+Twitter, as it was made by <a href="http://ericlippert.com/">Eric Lippert</a>, who was on the C# team at
+Microsoft for quite some time. Normally I agree with pretty much
+everything he writes. But not this time.</p>]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[ErgoDox Mechanical Keyboard Review]]></title>
+        <id>http://rossipedia.com/blog/2013/06/ergodox-mechanical-keyboard-review</id>
+        <link href="http://rossipedia.com/blog/2013/06/ergodox-mechanical-keyboard-review">
+        </link>
+        <updated>2013-06-24T18:07:00Z</updated>
+        <summary type="html"><![CDATA[<p>The <a href="http://ergodox.org">ErgoDox</a> is a custom split-hand ergonomic
+mechanical keyboard project started by <a href="http://geekhack.org">GeekHack</a>
+forum member Dox, and contributed to and refined by many others. It
+was offered as a kit on <a href="http://www.massdrop.com">MassDrop</a> starting
+in early 2013. After demand for a second run increased, MassDrop
+offered a second group buy, which I jumped on and placed my order. As
+of this writing, MassDrop is running a <a href="https://www.massdrop.com/buy/ergodox">third group buy</a> for the ErgoDox.</p>
+<p>This is going to be a review of my time with the ErgoDox, from
+construction to roughly a week of use. My kit arrived on June 5th
+2013, but I wasn&#39;t able to construct the board until June 16th, due to
+the fact that 8 month old babies have an odd temporal vortex around
+them that somehow sucks in available free time like a black hole sucks
+in matter.</p>
+<p>Yup, I spent my first Father&#39;s Day constructing a keyboard. Nerd
+achievement unlocked.</p>]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Elmah, Emails, and ServiceStack]]></title>
+        <id>http://rossipedia.com/blog/2013/03/elmah-emails-and-servicestack</id>
+        <link href="http://rossipedia.com/blog/2013/03/elmah-emails-and-servicestack">
+        </link>
+        <updated>2013-03-10T16:00:00Z</updated>
+        <summary type="html"><![CDATA[<p>As you can probably tell, I love <a href="http://servicestack.net">ServiceStack</a>. I also love
+<a href="https://code.google.com/p/elmah/">Elmah</a>, especially the the email notifications that it provides.</p>
+<p>However, the two don&#39;t really talk to each other out of the box. Sure,
+ServiceStack offers a <code>ElmahLogFactory</code> for handling errors and the
+like, and that works fine. But that only writes to the configured log.
+Emails are nowhere to be found. At least not in my project.</p>]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Simple API Key Authentication with ServiceStack]]></title>
+        <id>http://rossipedia.com/blog/2013/03/simple-api-key-authentication-with-servicestack</id>
+        <link href="http://rossipedia.com/blog/2013/03/simple-api-key-authentication-with-servicestack">
+        </link>
+        <updated>2013-03-06T18:09:00Z</updated>
+        <summary type="html"><![CDATA[<p>Sometimes you want to lock down your API to only allow certain clients
+access. I&#39;d like to share a simple way of doing just that, based on
+HTTP headers and a simple pre-shared key.</p>]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Integration Testing with ServiceStack]]></title>
+        <id>http://rossipedia.com/blog/2013/02/integration-testing-with-servicestack</id>
+        <link href="http://rossipedia.com/blog/2013/02/integration-testing-with-servicestack">
+        </link>
+        <updated>2013-02-28T05:31:00Z</updated>
+        <summary type="html"><![CDATA[<p>I&#39;m doing a lot of <a href="http://servicestack.net">ServiceStack</a> development these days, and
+loving every minute of it.</p>
+<p>One of the things I wanted with my integration tests was a controlled
+environment. I wanted to be able to set the connection string for the
+test database, and run full-stack tests on my services using
+<a href="http://www.nunit.org">NUnit</a> via <a href="http://www.jetbrains.com/resharper/">ReSharper</a>&#39;s test runner. However, I also wanted to
+be able to step through (F11) seamlessly from a given test case to the
+service code without missing a beat. Since my services were configured
+to run under ASP.NET/IIS, that last part required some thought.</p>]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Habit Driven Development]]></title>
+        <id>http://rossipedia.com/blog/2012/12/habit-driven-development</id>
+        <link href="http://rossipedia.com/blog/2012/12/habit-driven-development">
+        </link>
+        <updated>2012-12-12T09:04:00Z</updated>
+        <summary type="html"><![CDATA[<p>I am constantly amazed at the difficulties that we have to deal with
+day in and day out as a software developer due to somebody failing to
+just stop and <em>think</em> about what it is they&#39;re developing.</p>]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[IR_Black for MinTTY]]></title>
+        <id>http://rossipedia.com/blog/2012/12/ir_black-for-mintty</id>
+        <link href="http://rossipedia.com/blog/2012/12/ir_black-for-mintty">
+        </link>
+        <updated>2012-12-12T08:47:00Z</updated>
+        <summary type="html"><![CDATA[<p>Wanted to get an IR_Black color scheme for .mintty to match vim, so I
+whipped up the following:</p>]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The Art of Forgetting]]></title>
+        <id>http://rossipedia.com/blog/2012/12/the-art-of-forgetting</id>
+        <link href="http://rossipedia.com/blog/2012/12/the-art-of-forgetting">
+        </link>
+        <updated>2012-12-12T08:24:00Z</updated>
+        <summary type="html"><![CDATA[<p>I&#39;ve found that one of the most useful skills I have is knowing what
+to forget. Let me ask a question to demonstrate my point.</p>]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[The tweet rule]]></title>
+        <id>http://rossipedia.com/blog/2012/12/the-tweet-rule</id>
+        <link href="http://rossipedia.com/blog/2012/12/the-tweet-rule">
+        </link>
+        <updated>2012-12-11T07:00:00Z</updated>
+        <summary type="html"><![CDATA[<p>I ran across this lovely little interface method today:</p>
+<pre><code class="lang-csharp">public interface IOrderProcessor
+{
+  TransactionResponse CreateOrder(
+      Cart cart,
+      string email,
+      Payment payment,
+      Address billingAddress,
+      Address shippingAddress,
+      string notes,
+      int orderId);
+}
+</code></pre>]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[ReSharper.VirtualQuickFix Plugin]]></title>
+        <id>http://rossipedia.com/blog/2012/11/resharper-virtualquickfix-plugin</id>
+        <link href="http://rossipedia.com/blog/2012/11/resharper-virtualquickfix-plugin">
+        </link>
+        <updated>2012-11-26T08:03:00Z</updated>
+        <summary type="html"><![CDATA[<p>This is a simple plugin based on <a href="http://hadihariri.com/2010/01/12/writing-plug-ins-for-resharper-part-1-of-undefined/">Hadi Hariri&#39;s blog post</a> on
+creating plugins for <a href="http://www.jetbrains.com/resharper/">ReSharper</a>. I actually had a need for this in
+one of my projects, so I figured I&#39;d try my hand at the plugin.
+Unfortunately, it was written for an older version of ReSharper and
+didn&#39;t translate exactly. So this is an updated version of the plugin
+for ReSharper Version 7.x</p>]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Aaaaaaaand it's gone]]></title>
+        <id>http://rossipedia.com/blog/2012/11/aaaaaaaand-it-s-gone</id>
+        <link href="http://rossipedia.com/blog/2012/11/aaaaaaaand-it-s-gone">
+        </link>
+        <updated>2012-11-19T08:19:00Z</updated>
+        <summary type="html"><![CDATA[<p>Aaaaaaaaaand here we are, up on Github pages and using Octopress.
+Weeee!</p>
+<p>This was actually kind of fun. I think I might actually get some
+blogging done!</p>]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Blog moving]]></title>
+        <id>http://rossipedia.com/blog/2012/11/blog-moving</id>
+        <link href="http://rossipedia.com/blog/2012/11/blog-moving">
+        </link>
+        <updated>2012-11-18T07:00:00Z</updated>
+        <summary type="html"><![CDATA[<p>Like so many others, I will be migrating my blog over to Github Pages,
+using Octopress. I’m a programmer at heart, and I feel more at
+home on the Terminal/Command prompt than anywhere else, so we’ll
+see if I actually post more often as a result.</p>]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Safari on the iPad]]></title>
+        <id>http://rossipedia.com/blog/2012/08/safari-on-the-ipad</id>
+        <link href="http://rossipedia.com/blog/2012/08/safari-on-the-ipad">
+        </link>
+        <updated>2012-08-22T06:00:00Z</updated>
+        <summary type="html"><![CDATA[<p>Okay, for reals? Can I just please use Safari on iOS like I do on OSX? I never
+thought I’d want to browse the web on my Air more than I want to on my iPad,
+but I’m getting there.</p>
+<p>At the very least, please just let me two-finger swipe to navigate pages.</p>]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Conversations]]></title>
+        <id>http://rossipedia.com/blog/2012/08/conversations</id>
+        <link href="http://rossipedia.com/blog/2012/08/conversations">
+        </link>
+        <updated>2012-08-07T06:00:00Z</updated>
+        <summary type="html"><![CDATA[<p>I keep hearing people talking about “conversations” in software development.
+Like somehow “conversations” are super important.</p>
+<p>This is bothering me. In my experience, conversations for their own sake are
+the devil. They interfere with actual development.</p>
+<p>Get the job done, get something that works, get it out the door. Don’t bother
+talking about it unless there’s absolutely no way around it.</p>]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Compiling ASCX files into a class library]]></title>
+        <id>http://rossipedia.com/blog/2012/07/compiling-ascx-files-into-a-class-library</id>
+        <link href="http://rossipedia.com/blog/2012/07/compiling-ascx-files-into-a-class-library">
+        </link>
+        <updated>2012-07-31T06:00:00Z</updated>
+        <summary type="html"><![CDATA[<p>Recently, I needed to reuse some user controls across multiple webforms
+applications. What I wanted was a way for our UI guy to author and develop
+these controls using <em>.ascx and </em>.ascx.(cs|vb) code-behind files, since that
+was what he knew and was good at.</p>
+<p>There’s a couple of ways to do this, some involving embedding the ASCX file as
+an embedded resource. I didn’t want to go that route tho. I did find
+<a href="http://odetocode.com/blogs/scott/archive/2005/10/06/using-msbuild-and-ilmerge-to-package-user-controls-for-reuse.aspx">one reference</a> that pointed me in the right direction though. But it wasn’t
+quite exactly what I needed. For one, it didn’t play nicely with any other
+project references your control library might need. So, using Scott’s post as a
+starting point, I came up with a solution that I think works out very nicely.</p>]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Conflict and Creativity]]></title>
+        <id>http://rossipedia.com/blog/2012/06/conflict-and-creativity</id>
+        <link href="http://rossipedia.com/blog/2012/06/conflict-and-creativity">
+        </link>
+        <updated>2012-06-30T06:00:00Z</updated>
+        <summary type="html"><![CDATA[<p>I’ve spent most of my life trying to avoid unnecessary conflict. Most of the
+time it works out for me. I hate dealing with stress, and most of the time it
+seems to me that many people tend to react to situations in stressful ways that
+are completely unneeded.</p>
+<p>However...</p>
+<p>Recently I’ve been coming to a pretty startling conclusion:</p>
+<blockquote>
+<p>Nothing worthwhile will ever be attained without struggle, conflict, and to
+some degree – pain. Nothing.</p>
+</blockquote>]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Attention to detail]]></title>
+        <id>http://rossipedia.com/blog/2012/06/attention-to-detail</id>
+        <link href="http://rossipedia.com/blog/2012/06/attention-to-detail">
+        </link>
+        <updated>2012-06-18T06:00:00Z</updated>
+        <summary type="html"><![CDATA[<p>I usually don’t bother with the fanboyism, but I’ve been playing around with iOS
+6 beta, and just found something cool.</p>
+<p>I thought that the auto-brightness feature just wasn’t working. Turns out I
+wasn’t paying good enough attention.</p>
+<p>Apparently, the brightness transition is now just super slow. So slow, I didn’t
+realize it was happening. So subtle that I didn’t consciously realize that my
+iPhone was just always readable.</p>
+<p>Hats off to you, Apple.</p>]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[When it comes to art, less is always more]]></title>
+        <id>http://rossipedia.com/blog/2012/06/when-it-comes-to-art-less-is-always-more</id>
+        <link href="http://rossipedia.com/blog/2012/06/when-it-comes-to-art-less-is-always-more">
+        </link>
+        <updated>2012-06-06T06:00:00Z</updated>
+        <summary type="html"><![CDATA[<p>The other day I came across a video snippet of some Star Wars themed video game
+where the characters were dancing.</p>
+<p>Star Wars characters. Dancing.</p>
+<p>What. The. Fuck.</p>]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Thoughts on Windows 8]]></title>
+        <id>http://rossipedia.com/blog/2012/05/thoughts-on-windows-8</id>
+        <link href="http://rossipedia.com/blog/2012/05/thoughts-on-windows-8">
+        </link>
+        <updated>2012-05-31T06:00:00Z</updated>
+        <summary type="html"><![CDATA[<p>A few days ago I installed the Windows 8 Consumer Preview. A few hours later I
+reinstalled Windows 7 Ultimate.</p>
+<p>Windows 8 is a train wreck. A mess. A disaster. Its user experience is
+completely disjointed and confused. What was Microsoft thinking? Windows 7 is,
+to date, the best OS they’ve ever released. I would expect version 8
+to build upon that success.</p>
+<p>Instead, like Frankenstein, they sew on a tablet OS, Metro. Now, Metro is slick.
+The Windows Phone 7 experience is refreshing, unified, and completely <em>usable</em>.
+But it has zero business being anywhere near my Windows desktop experience. It
+just feels wrong interacting with the Metro elements with a mouse pointer. When
+I’m on the desktop, it feels natural. I’m doing all the normal things I’ve
+always done with my keyboard and mouse, and it works great.</p>
+<p>Until I have to start some program that isn’t pinned, or access any system
+settings. Then things get ugly.</p>]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Decoupling metadata from your models]]></title>
+        <id>http://rossipedia.com/blog/2012/05/decoupling-metadata-from-your-models</id>
+        <link href="http://rossipedia.com/blog/2012/05/decoupling-metadata-from-your-models">
+        </link>
+        <updated>2012-05-28T06:00:00Z</updated>
+        <summary type="html"><![CDATA[<p>Most of the time, decorating your models with validation attributes
+works just fine. But sometimes you need to separate your validation
+logic from your models. For example, re-using your models across
+multiple projects, but each project has it’s own validation rules.</p>]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Hello there]]></title>
+        <id>http://rossipedia.com/blog/2012/03/hello-there</id>
+        <link href="http://rossipedia.com/blog/2012/03/hello-there">
+        </link>
+        <updated>2012-03-16T06:00:00Z</updated>
+        <summary type="html"><![CDATA[<p>I’ve attempted a few times over the years to get a blog up and
+running, hopefully this time it’ll stick. I’ll be blogging about quite
+a few things.</p>
+<ul>
+<li>Programming/Web Development</li>
+<li>Music, Engineering, Production – probably a few Pro Tools</li>
+<li>screencasts</li>
+<li>Life in general, mainly inspired by my impending fatherhood.</li>
+</ul>
+<p>Hope whoever reads enjoys the ride!</p>]]></summary>
+    </entry>
+</feed>

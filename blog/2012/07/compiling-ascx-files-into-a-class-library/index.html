@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Compiling ASCX files into a class library - Rossipedia</title>
+    <link rel="shortcut icon" href="http://www.gravatar.com/avatar/74c4a12ee78a7e49b8333a6c78aae47c.png">
+    <link rel="stylesheet" type="text/css" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/hl/github.css">
+    <script type="text/javascript" src="/scripts/ender.js"></script>
+    <link rel="canonical" href="http://rossipedia.com/blog/2012/07/compiling-ascx-files-into-a-class-library">
+  </head>
+  <body>
+    <input type="checkbox" id="sidebar-checkbox" class="sidebar-checkbox">
+    <section class="wrap">
+      <section class="masthead">
+        <header role="banner" class="container">
+          <h1><a href="/">Rossipedia</a></h1>
+          <h2>Code, music, and other junk</h2>
+        </header>
+      </section>
+      <section class="main container">
+        <article>
+          <header>
+            <h1><a href="/blog/2012/07/compiling-ascx-files-into-a-class-library">Compiling ASCX files into a class library</a></h1>
+            <time datetime="2012-07-31T06:00:00.000Z">Jul 31 2012</time><a rel="author">Bryan J. Ross</a>
+          </header>
+          <section class="content"><p>Recently, I needed to reuse some user controls across multiple webforms
+applications. What I wanted was a way for our UI guy to author and develop
+these controls using <em>.ascx and </em>.ascx.(cs|vb) code-behind files, since that
+was what he knew and was good at.</p>
+<p>There’s a couple of ways to do this, some involving embedding the ASCX file as
+an embedded resource. I didn’t want to go that route tho. I did find
+<a href="http://odetocode.com/blogs/scott/archive/2005/10/06/using-msbuild-and-ilmerge-to-package-user-controls-for-reuse.aspx">one reference</a> that pointed me in the right direction though. But it wasn’t
+quite exactly what I needed. For one, it didn’t play nicely with any other
+project references your control library might need. So, using Scott’s post as a
+starting point, I came up with a solution that I think works out very nicely.</p>
+<!-- more -->
+
+<h2 id="the-setup">The setup</h2>
+<p>You’ll need to make sure you download and install <a href="http://www.microsoft.com/en-us/download/details.aspx?id=17630">ILMerge</a> in order for
+this to work. These steps assume the default install location.</p>
+<p>Start with an empty C# class library project, and add a reference to
+System.Web.</p>
+<p>Add your control. For this example I’m just going to use the following super
+basic control (named MyControl.ascx):</p>
+<pre><code class="lang-html">&lt;%@ Control Language=&quot;C#&quot; ClassName=&quot;ControlTest.MyControl&quot;
+CodeFile=&quot;MyControl.ascx.cs&quot; Inherits=&quot;ControlTest.MyControlCode&quot;
+AutoEventWireup=&quot;true&quot; %&gt;
+
+&lt;asp:MultiView runat=&quot;server&quot; ID=&quot;mvName&quot;&gt;
+&lt;Views&gt;
+   &lt;asp:View runat=&quot;server&quot; ID=&quot;vwDisplay&quot;&gt;
+       Your name is &lt;asp:Label runat=&quot;server&quot; ID=&quot;lblName&quot; /&gt;
+       &lt;asp:Button runat=&quot;server&quot; ID=&quot;btnReset&quot;
+       OnClick=&quot;ResetButtonClick&quot; Text=&quot;Reset Name&quot; /&gt;
+   &lt;/asp:View&gt;
+   &lt;asp:View runat=&quot;server&quot; ID=&quot;vwInput&quot;&gt;
+       Enter your name: &lt;asp:TextBox runat=&quot;server&quot;
+       ID=&quot;txtName&quot;&gt;&lt;/asp:TextBox&gt;
+       &lt;asp:Button runat=&quot;server&quot; ID=&quot;btnSet&quot; OnClick=&quot;SetButtonClick&quot;
+       Text=&quot;Set Name&quot; /&gt;
+   &lt;/asp:View&gt;
+&lt;/Views&gt;
+&lt;/asp:MultiView&gt;
+</code></pre>
+<p>Note: You’ll have to add this by selecting “Text File” as Class Library
+projects don’t give you the web control templates.</p>
+<p>A couple of important things to note:</p>
+<ol>
+<li>The <strong>CodeFile </strong>attribute is used instead of the <strong>CodeBehind</strong> attribute.
+This is due to  the fact that the ASP.NET compiler ignores files referenced
+by <strong>CodeBehind.</strong></li>
+<li>The <strong>ClassName </strong>attribute is used so that we can specify what class name
+we want (including the namespace). Otherwise, we’d have to resort to using
+silly things like <strong><asp:mycontrol_ascx /></strong>. And that’s just silly.</li>
+</ol>
+<p>Here’s the contents of my <strong>MyControl.ascx.cs</strong> file:</p>
+<pre><code class="lang-csharp">namespace ControlTest
+{
+    using System;
+    using System.Web.UI;
+
+    public partial class MyControlCode : UserControl
+    {
+        public void Page_Load(object sender, EventArgs e)
+        {
+                if(!IsPostBack)
+                {
+                        this.mvName.SetActiveView(this.vwInput);
+                }
+        }
+
+        public void SetButtonClick(object sender, EventArgs e)
+        {
+                this.lblName.Text = this.txtName.Text;
+                this.mvName.SetActiveView(this.vwDisplay);
+        }
+
+        public void ResetButtonClick(object sender, EventArgs e)
+        {
+                this.lblName.Text = string.Empty;
+                this.mvName.SetActiveView(this.vwInput);
+        }
+    }
+}
+</code></pre>
+<p>Pretty basic stuff. Now here’s where the magic happens. Be warned: this gets a
+little down and dirty. Right click the project, and click “Unload Project”,
+then right click it again and hit “Edit [Project name]…”. This is going
+to open up the actual project file in the XML editor.</p>
+<p>Down at the bottom, right before the end <strong></Project></strong>, add the following
+targets:</p>
+<pre><code class="lang-xml">&lt;Target Name=&quot;BuildReferences&quot;&gt;
+        &lt;MSBuild Projects=&quot;@(ProjectReference)&quot; Targets=&quot;Build&quot;
+        BuildInParallel=&quot;True&quot;&gt;
+                &lt;Output TaskParameter=&quot;TargetOutputs&quot;
+                ItemName=&quot;ReferencedAssemblies&quot; /&gt;
+        &lt;/MSBuild&gt;
+&lt;/Target&gt;
+&lt;Target Name=&quot;CompileUserControls&quot; DependsOnTargets=&quot;BuildReferences&quot;
+Inputs=&quot;@(Compile);@(Content)&quot;
+Outputs=&quot;$(OutputPath)\$(AssemblyName).dll&quot;&gt;
+        &lt;PropertyGroup&gt;
+                &lt;TempDirectory&gt;$(MSBuildProjectDirectory)\temp&lt;/TempDirectory&gt;
+                &lt;ILMergeEXE&gt;$(ProgramFiles)\Microsoft\ILMerge\ILMerge.exe&lt;/ILMergeEXE&gt;
+        &lt;/PropertyGroup&gt;
+        &lt;Copy SourceFiles=&quot;@(ReferencedAssemblies)&quot;
+        DestinationFolder=&quot;$(MSBuildProjectDirectory)\bin&quot;
+        SkipUnchangedFiles=&quot;true&quot; /&gt;
+        &lt;AspNetCompiler Debug=&quot;$(DebugSymbols)&quot;
+        PhysicalPath=&quot;$(MSBuildProjectDirectory)&quot;
+        TargetPath=&quot;$(TempDirectory)&quot;
+        VirtualPath=&quot;$(MSBuildProjectDirectory)&quot; Updateable=&quot;false&quot;
+        Force=&quot;true&quot; /&gt;
+        &lt;CreateItem Include=&quot;$(TempDirectory)\bin\App_Web*.dll&quot;&gt;
+                &lt;Output ItemName=&quot;PrecompiledAssemblies&quot;
+                TaskParameter=&quot;Include&quot; /&gt;
+        &lt;/CreateItem&gt;
+        &lt;MakeDir Directories=&quot;$(OutputPath)&quot; /&gt;
+        &lt;Exec Command=&quot;&quot;$(ILMergeEXE)&quot; /union
+        /out:$(OutputPath)\$(AssemblyName).dll /targetplatform:v4
+        @(PrecompiledAssemblies, &#39; &#39;)&quot; /&gt;
+&lt;/Target&gt;
+&lt;Target Name=&quot;Clean&quot;&gt;
+        &lt;RemoveDir Directories=&quot;$(TempDirectory)&quot; /&gt;
+        &lt;RemoveDir Directories=&quot;$(OutputPath)&quot; /&gt;
+&lt;/Target&gt;
+</code></pre>
+<p>Now, change the <strong>DefaultTargets</strong> attribute of the <strong><Project> element at the
+top of the file to have the value “CompileUserControls”. You want it to look
+like this:</strong></p>
+<pre><code class="lang-xml">&lt;Project ToolsVersion=&quot;4.0&quot; DefaultTargets=&quot;Build&quot;
+xmlns=&quot;http://schemas.microsoft.com/developer/msbuild/2003&quot;&gt;
+</code></pre>
+<p>Now save and close that file, right click the project in Solution Explorer,
+    reload the project, and then hit “Build”. You’ll notice the build process
+    takes a little longer than usual.</p>
+<p>What’s happening behind the scenes is this:</p>
+<ol>
+<li>MSBuild is calling the tool <strong>aspnet_compiler.exe</strong> to build each ascx and<pre><code>ascx.cs file into their own assemblies. This is what happens when you
+pre-compile an ASP.NET web site or web application
+</code></pre></li>
+<li>The individual assemblies are then merged using ILMerge into a single final<pre><code>assembly
+</code></pre></li>
+<li>That assembly is placed in the output folder for the current configuration.</li>
+</ol>
+<p>This is set up so that it won’t rebuild the dll if it doesn’t need to. Also, it
+won’t compile in any output dll’s that are dependencies of this project.</p>
+<p>Something to be aware of: This relies on the fact that currently the
+aspnet_compiler tool generates assemblies prefixed by the string <strong>“App_Web”</strong>.
+This could possibly change in the future. Just make sure any projects that your
+control library references don’t start with ”App_Web”, or else they’ll get
+merged in to the resulting control dll, which you probably don’t want to
+happen.</p>
+<p>Now, add an empty ASP.NET Web Application to the solution, and add a project
+reference to the ControlTest (or whatever yours is called) project.</p>
+<p>This is the default.aspx file:</p>
+<pre><code class="lang-html">&lt;%@ Page Language=&quot;C#&quot; AutoEventWireup=&quot;true&quot; CodeBehind=&quot;default.aspx.cs&quot;
+Inherits=&quot;ControlTestWeb._default&quot; %&gt;
+&lt;%@ Register tagPrefix=&quot;controls&quot; namespace=&quot;ControlTest&quot;
+assembly=&quot;ControlTest&quot; %&gt;
+
+&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot;
+&quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
+
+&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+    &lt;head runat=&quot;server&quot;&gt;
+        &lt;title&gt;&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;form id=&quot;form1&quot; runat=&quot;server&quot;&gt;
+            &lt;div&gt;
+
+                &lt;controls:MyControl runat=&quot;server&quot; ID=&quot;myControl&quot; /&gt;
+
+            &lt;/div&gt;
+        &lt;/form&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+          </section>
+          <section class="comments">
+            <div id="disqus_thread"></div>
+          </section>
+        </article>
+      </section>
+      <footer class="container">
+        <ul class="nav">
+          <li><a href="/blog/2012/06/conflict-and-creativity">&lt;</a></li>
+          <li><a href="/blog/">Archives</a></li>
+          <li><a href="/blog/2012/08/conversations">&gt;</a></li>
+        </ul><p>&copy; 2014 content and design by
+<a href="href=&quot;http://rossipedia.com&quot;">Bryan J. Ross</a></p>
+
+      </footer>
+      <section class="sidebar-wrap">
+        <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+        <section class="sidebar">
+          <aside>
+            <p>Code MacGuyver @ <a href="http://stackexchange.com" target="_blank">StackExchange</a></p>
+            <p>I've been known to play and record music.</p>
+          </aside>
+          <section class="search">
+            <form action="http://google.com/search" method="get" class="search">
+              <input type="hidden" name="q" value="site:rossipedia.com">
+              <input type="text" name="q" placeholder="Search..." class="search"><span class="rss"><a href="atom.xml" title="Subscribe to the RSS feed">RSS</a></span>
+            </form>
+          </section>
+          <section>
+            <h2>Recent Posts<a href="/blog/">&nbsp;- more</a></h2>
+            <nav class="recent">
+              <ul>
+                <li><a href="/blog/2013/08/dependency-injection-considered-harmful-not-so-fast-">Dependency Injection considered harmful? Not so fast.</a></li>
+                <li><a href="/blog/2013/06/ergodox-mechanical-keyboard-review">ErgoDox Mechanical Keyboard Review</a></li>
+                <li><a href="/blog/2013/03/elmah-emails-and-servicestack">Elmah, Emails, and ServiceStack</a></li>
+                <li><a href="/blog/2013/03/simple-api-key-authentication-with-servicestack">Simple API Key Authentication with ServiceStack</a></li>
+                <li><a href="/blog/2013/02/integration-testing-with-servicestack">Integration Testing with ServiceStack</a></li>
+                <li><a href="/blog/">More...</a></li>
+              </ul>
+            </nav>
+          </section>
+          <section class="stackoverflow"><a href="http://stackoverflow.com/users/115049/rossipedia"><img src="http://stackoverflow.com/users/flair/115049.png?theme=dark" width="208" height="58" alt="profile for rossipedia at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for rossipedia at Stack Overflow, Q&amp;A for professional and enthusiast programmers"></a></section>
+          <section>
+            <h2><a href="http://github.com/rossipedia">@rossipedia on GitHub</a></h2>
+            <nav class="repos">
+              <ul id="gh_repos">
+                <li class="loading"><a>Status updating...</a></li>
+              </ul>
+            </nav>
+            <script type="text/javascript" src="/scripts/github.js"></script>
+          </section><a href="https://twitter.com/rossipedia" data-widget-id="381923369030934528" class="twitter-timeline">Tweets by @rossipedia</a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+        </section>
+      </section>
+    </section>
+    <script src="/scripts/hl/highlight.pack.js"></script>
+    <script type="text/javascript" src="/scripts/rossipedia.js"></script>
+  </body>
+</html>
