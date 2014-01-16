@@ -762,12 +762,15 @@ section.main kbd {
   background-color: rgba(80, 80, 80, 0.8);
 }
 @media only screen and (max-width: 570px) {
+  html {
+    font-size: 14.4px;
+  }
   .masthead header {
     padding: .5rem;
     text-align: center;
   }
   .masthead header h1 {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
   }
   .masthead header h2 {
     font-size: .8rem;
@@ -777,13 +780,10 @@ section.main kbd {
   }
   section.main > article > header time,
   section.main > article > header a[rel=author] {
-    font-size: .7rem;
+    font-size: .75rem;
   }
   section.main h1 {
     font-size: 1rem;
-  }
-  section.main time {
-    font-size: .5rem;
   }
   p {
     font-size: .9rem;
