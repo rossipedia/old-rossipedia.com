@@ -761,7 +761,7 @@ section.main kbd {
   color: #fff;
   background-color: rgba(80, 80, 80, 0.8);
 }
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 570px) {
   .masthead header {
     padding: .5rem;
     text-align: center;
