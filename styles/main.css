@@ -762,8 +762,10 @@ section.main kbd {
   background-color: rgba(80, 80, 80, 0.8);
 }
 @media only screen and (max-width: 570px) {
-  html {
+  html,
+  body {
     font-size: 14.4px;
+    -webkit-text-size-adjust: none;
   }
   .masthead header {
     padding: .5rem;
@@ -778,14 +780,17 @@ section.main kbd {
   section.main > article > header {
     font-family: Helvetica Neue, "Segoe UI", "Arial", sans-serif;
   }
+  section.main > article > header h1 {
+    font-size: 1rem;
+  }
   section.main > article > header time,
   section.main > article > header a[rel=author] {
     font-size: .75rem;
   }
-  section.main h1 {
-    font-size: 1rem;
-  }
-  p {
+  section.main > article .content p {
     font-size: .9rem;
+  }
+  .sideba {
+    font-size: 16px;
   }
 }
