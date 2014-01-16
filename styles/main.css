@@ -166,7 +166,7 @@ h5,
 h6 {
   font-family: Constantia, Georgia, serif;
 }
-h1 {
+.masthead header h1 {
   font-size: 1.9rem;
 }
 .masthead header h1 a {
@@ -760,4 +760,32 @@ section.main kbd {
   right: .5rem;
   color: #fff;
   background-color: rgba(80, 80, 80, 0.8);
+}
+@media only screen and (max-width: 480px) {
+  .masthead header {
+    padding: .5rem;
+    text-align: center;
+  }
+  .masthead header h1 {
+    font-size: 1.4rem;
+  }
+  .masthead header h2 {
+    font-size: .8rem;
+  }
+  section.main > article > header {
+    font-family: Helvetica Neue, "Segoe UI", "Arial", sans-serif;
+  }
+  section.main > article > header time,
+  section.main > article > header a[rel=author] {
+    font-size: .7rem;
+  }
+  section.main h1 {
+    font-size: 1rem;
+  }
+  section.main time {
+    font-size: .5rem;
+  }
+  p {
+    font-size: .9rem;
+  }
 }
