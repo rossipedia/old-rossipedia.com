@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url> <loc>http://rossipedia.com/blog/2013/08/dependency-injection-considered-harmful-not-so-fast</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://rossipedia.com/blog/2013/08/dependency-injection-considered-harmful</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
 <url> <loc>http://rossipedia.com/blog/2013/06/ergodox-mechanical-keyboard-review</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
 <url> <loc>http://rossipedia.com/blog/2013/03/elmah-emails-and-servicestack</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
 <url> <loc>http://rossipedia.com/blog/2013/03/simple-api-key-authentication-with-servicestack</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>

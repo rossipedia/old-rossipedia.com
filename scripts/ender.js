@@ -2,7 +2,7 @@
   * =============================================================
   * Ender: open module JavaScript framework (https://ender.no.de)
   * Build: ender build jeesh reqwest jar underscore --output build/scripts/ender
-  * Packages: ender-js@0.5.0 domready@0.2.13 qwery@3.4.1 bonzo@1.3.7 bean@1.0.6 jeesh@0.0.6 reqwest@0.9.7 es5-basic@0.2.1 jar@0.3.4 underscore@1.5.2
+  * Packages: ender-js@0.5.0 domready@0.2.13 qwery@3.4.1 bonzo@1.3.7 bean@1.0.6 jeesh@0.0.6 reqwest@1.0.2 es5-basic@0.2.1 jar@0.3.4 underscore@1.5.2
   * =============================================================
   */
 
@@ -2818,7 +2818,7 @@
 
   var module = { exports: {} }, exports = module.exports;
 
-  /*! version: 0.9.7
+  /*! version: 1.0.2
     * Reqwest! A general purpose XHR connection manager
     * license MIT (c) Dustin Diaz 2013
     * https://github.com/ded/reqwest
@@ -2935,7 +2935,6 @@
       var reqId = uniqid++
         , cbkey = o['jsonpCallback'] || 'callback' // the 'callback' key
         , cbval = o['jsonpCallbackName'] || reqwest.getcallbackPrefix(reqId)
-        // , cbval = o['jsonpCallbackName'] || ('reqwest_' + reqId) // the 'callback' value
         , cbreg = new RegExp('((^|\\?|&)' + cbkey + ')=([^&]+)')
         , match = url.match(cbreg)
         , script = doc.createElement('script')

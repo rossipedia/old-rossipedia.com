@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>Rossipedia</title>
     <id>http://rossipedia.com</id>
-    <updated>2014-01-24T00:42:11Z</updated>
+    <updated>2014-01-24T05:50:27Z</updated>
     <author>
         <name>Bryan J. Ross</name>
         <email>bryan@rossipedia.com</email>
@@ -11,8 +11,8 @@
     <generator>Feed for Node.js</generator>
     <entry>
         <title type="html"><![CDATA[Dependency Injection considered harmful? Not so fast.]]></title>
-        <id>http://rossipedia.com/blog/2013/08/dependency-injection-considered-harmful-not-so-fast</id>
-        <link href="http://rossipedia.com/blog/2013/08/dependency-injection-considered-harmful-not-so-fast">
+        <id>http://rossipedia.com/blog/2013/08/dependency-injection-considered-harmful</id>
+        <link href="http://rossipedia.com/blog/2013/08/dependency-injection-considered-harmful">
         </link>
         <updated>2013-08-31T16:29:00Z</updated>
         <summary type="html"><![CDATA[<p>A question came up on StackOverflow today:</p>
