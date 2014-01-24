@@ -4,12 +4,12 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>Dependency Injection considered harmful? Not so fast. - Rossipedia</title>
+    <title>Redis: I like you, but you're crazy - Rossipedia</title>
     <link rel="shortcut icon" href="http://www.gravatar.com/avatar/74c4a12ee78a7e49b8333a6c78aae47c.png">
     <link rel="stylesheet" type="text/css" href="/styles/main.css">
     <link rel="stylesheet" href="/styles/hl/github.css">
     <script type="text/javascript" src="/scripts/ender.js"></script>
-    <link rel="canonical" href="http://rossipedia.com/blog/2013/08/dependency-injection-considered-harmful">
+    <link rel="canonical" href="http://rossipedia.com/blog/2014/01/redis-i-like-you-but-youre-crazy">
   </head>
   <body>
     <input type="checkbox" id="sidebar-checkbox" class="sidebar-checkbox">
@@ -23,71 +23,61 @@
       <section class="main container">
         <article>
           <header>
-            <h1><a href="/blog/2013/08/dependency-injection-considered-harmful">Dependency Injection considered harmful? Not so fast.</a></h1>
-            <time datetime="2013-08-31T16:29:00.000Z">Aug 31 2013</time><a rel="author">Bryan J. Ross</a>
+            <h1><a href="/blog/2014/01/redis-i-like-you-but-youre-crazy">Redis: I like you, but you're crazy</a></h1>
+            <time datetime="2014-01-23T22:00:00.000Z">Jan 23 2014</time><a rel="author">Bryan J. Ross</a>
           </header>
-          <section class="content"><p>A question came up on StackOverflow today:</p>
-<blockquote>
-<p><a href="http://stackoverflow.com/questions/18547909/what-would-be-the-most-powerful-argument-for-writing-solid-applications">What would be the most powerful argument for writing SOLID applications?</a></p>
-</blockquote>
-<p>One of the comments on this question caused a bit of a stir on
-Twitter, as it was made by <a href="http://ericlippert.com/">Eric Lippert</a>, who was on the C# team at
-Microsoft for quite some time. Normally I agree with pretty much
-everything he writes. But not this time.</p>
+          <section class="content"><p>Dear <a href="http://redis.io">Redis</a>,</p>
+<p><img src="http://i.imgur.com/fUGHSu1.jpg" alt="I like you, but you&#39;re crazy"></p>
 <!-- more -->
 
-<p>His comment states:</p>
-<blockquote>
-<p>There is no killer argument for DI because DI is basically a bad
-idea. The idea of DI is that you take what ought to be
-implementation details of a class and then allow the user of the
-class to determine those implementation details. This means that the
-author of the class no longer has control over the correctness or
-performance or reliability of the class; that control is put into
-the hands of the caller, who does not know enough about the internal
-implementation details of the class to make a good choice.</p>
-</blockquote>
-<p>Now, Eric Lippert is a smart guy. Like, <em>scary</em> smart. His knowledge
-of C# probably rivals that of Anders (Hejlsberg, creator of C#).
-However, I have an issue with his argument, as it misses the big
-picture.</p>
-<p>As you may or may not know, <a href="http://en.wikipedia.org/wiki/SOLID_(object-oriented_design)#cite_note-ub-old-web-solid-1">SOLID</a> is a set of principles guiding the
-design and architecture of software, introduced by Robert C
-Martin, AKA &quot;Uncle Bob&quot; (original article <a href="http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod">here</a>).</p>
-<p>The problem with Eric&#39;s comment is that it only addresses a single
-point of the SOLID principle: the &quot;D&quot;, which stands for the Dependency
-Inversion Principle, which states one should depend on abstractions
-rather than concretions. Taken in isolation, the comment actually
-makes sense. But SOLID isn&#39;t about isolation. It&#39;s about applying
-<em>all</em> it&#39;s principles.</p>
-<p>Let&#39;s take a few points in order:</p>
-<blockquote>
-<p>This means that the author of the class no longer has control over
-the correctness or performance or reliability of the class</p>
-</blockquote>
-<p>If you apply the rest of SOLID, then this doesn&#39;t really hold water,
-because:</p>
+<p>Don&#39;t get me wrong, Redis is awesome. We absolutely love it at Stack
+Exchange, but it can have some unexpected behavior.</p>
+<p>Okay, maybe not totally unexpected, but unexpected to <em>me</em>.</p>
+<p>The other day I found myself writing a relatively simple testbed for
+processing a redis queue (via <a href="https://code.google.com/p/booksleeve/">Booksleeve</a>). Just a super simple
+while loop calling <a href="https://code.google.com/p/booksleeve/">BLPOP</a> and spitting out the results.</p>
+<p>I ran into some... well, &quot;interesting&quot; behavior. And to be completely
+honest, it was mainly due to assumptions I had made about how Redis
+handles connections.</p>
+<p>However, the edge case I ran into was most definitely <em>not</em> obvious,
+so I figured I&#39;d document it here, partially in the hopes that I can
+help somebody out, but mainly just because I know I&#39;m going to forget
+this and probably run into it again six months from now.</p>
+<p>I wrote up what I was experiencing in a <a href="http://stackoverflow.com/questions/21059099/">Stack Overflow question</a>.
+Go ahead and read it. I&#39;ll wait.</p>
+<p>Done? Great! Anyway, I finally figured out what was going on. A few
+factors led to this behavior (as far as I understand it):</p>
+<p><strong>1 - The Redis server&#39;s <code>timeout</code> setting was set to <code>0</code></strong></p>
+<p>This means that Redis won&#39;t timeout idle connections. Huh? &quot;Why would
+you want that?&quot; you ask. Well, it turns out that this is a pretty good
+default for Redis (think: PUB/SUB). Sometimes there are clients
+connected to redis for days on end with no activity, just waiting for
+an event to be published.</p>
+<p><strong>2 - The <code>tcp-keepalive</code> setting was set to <code>0</code></strong></p>
+<p>This is closely tied to above. The way I understand it, the
+<code>tcp-keepalive</code> setting tells the OS to periodiacally send a TCP level
+&quot;ping&quot; of sorts to the client to detect if it&#39;s still connected. Since
+this setting was set to zero, this feature was disabled.</p>
+<p>And here&#39;s the linchpin:</p>
+<p><strong>3 - Visual Studio&#39;s &quot;Stop Debugging&quot; command (<kbd>Shift+F5</kbd>) is absolutely brutal.</strong></p>
+<p>The whole process is killed (no GC, no cleanup, most likely a
+<a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms686714(v=vs.85).aspx">TerminateProcess</a> call). The process and anything that the process
+is doing is just nuked and the memory reclaimed (any die hard Win32
+guys out there feel free to correct me if I&#39;m wrong).</p>
+<p>The combination of both <code>timeout</code> and <code>tcp-keepalive</code> means that:</p>
 <ul>
-<li>The class is only doing ONE well-defined thing (SRP)</li>
-<li>The dependencies that are being injected are doing one thing that is
-well defined (SRP and ISP)</li>
-<li>Any implementation of those dependencies will be correct (LSP)</li>
+<li>Idle client connections are never killed.</li>
+<li>The server can&#39;t differentiate between an idle client and a dead
+one.</li>
 </ul>
-<p>(OCP doesn&#39;t really apply here to this, as it sort of comes as a result of
- applying the other principles well and guides their implementation).</p>
-<blockquote>
-<p>; that control is put into the hands of the caller, who does not know
-enough about the internal implementation details of the class to
-make a good choice</p>
-</blockquote>
-<p>I also don&#39;t agree with this, because the whole point here is that
-dependencies of a class, if designed well, have NO knowledge of what
-class depends on them, and shouldn&#39;t have to. There&#39;s no
-choice to be made.</p>
-<p>With SOLID, you have four other principles that also guide your
-architecture. These principles work together to form a single
-methodology that has been proven many times over. If you pick just
-one, or leave one out, then all bets are off.</p>
+<p>Which meant that whenever I&#39;d use the &quot;Stop Debugging&quot; command, on the
+queue processor, the last <code>BLPOP</code> that was issued was <em>still valid</em> as
+far as Redis was concerned.</p>
+<p>After hitting <kbd>F5</kbd> and <kbd>Shift+F5</kbd> a couple of times,
+I basically had quite a sum of queued up <code>BLPOP</code> commands from dead
+connections, which led to the odd results.</p>
+<p>Moral of the story? Understand the configuration and behavior of the
+services you depend on, and <em>don&#39;t</em> make assumptions.</p>
 
           </section>
           <footer class="comments">
@@ -96,7 +86,7 @@ one, or leave one out, then all bets are off.</p>
               /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
               if (/rossipedia\.com/.test(location.host)) {
                var disqus_shortname = 'rossipedia'; // required: replace example with your forum shortname
-               //- var disqus_url = 'http://rossipedia.com/blog/2013/08/dependency-injection-considered-harmful';
+               //- var disqus_url = 'http://rossipedia.com/blog/2014/01/redis-i-like-you-but-youre-crazy';
                
                /* * * DON'T EDIT BELOW THIS LINE * * */
                (function() {
@@ -112,9 +102,9 @@ one, or leave one out, then all bets are off.</p>
       </section>
       <footer class="container">
         <ul class="nav">
-          <li><a href="/blog/2013/06/ergodox-mechanical-keyboard-review">&lt;</a></li>
+          <li><a href="/blog/2013/08/dependency-injection-considered-harmful">&lt;</a></li>
           <li><a href="/blog/">Archives</a></li>
-          <li><a href="/blog/2014/01/redis-i-like-you-but-youre-crazy">&gt;</a></li>
+          <li><a disabled="disabled">&gt;</a></li>
         </ul><p>&copy; 2014 content and design by
 <a href="href=&quot;http://rossipedia.com&quot;">Bryan J. Ross</a></p>
 

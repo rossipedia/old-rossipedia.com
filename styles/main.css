@@ -377,9 +377,9 @@ body {
 }
 .masthead header h1 a {
   color: #444444;
-  -webkit-transition: color 0.25s ease-in-out;
-  -moz-transition: color 0.25s ease-in-out;
-  transition: color 0.25s ease-in-out;
+  -webkit-transition: color 0.1s linear;
+  -moz-transition: color 0.1s linear;
+  transition: color 0.1s linear;
 }
 .masthead header h1 a:hover {
   color: #793501;
@@ -393,9 +393,9 @@ section.main > article > header h1 {
 }
 section.main > article > header h1 a {
   color: #444444;
-  -webkit-transition: color 0.25s ease-in-out;
-  -moz-transition: color 0.25s ease-in-out;
-  transition: color 0.25s ease-in-out;
+  -webkit-transition: color 0.1s linear;
+  -moz-transition: color 0.1s linear;
+  transition: color 0.1s linear;
 }
 section.main > article > header h1 a:hover {
   color: #ac4b01;
@@ -481,6 +481,14 @@ section.main kbd {
   color: #333;
   box-shadow: 0 0.1rem 0 0 rgba(0, 0, 0, 0.2), 0 0 0 0.2rem #ffffff inset;
   text-shadow: 0 1px 0 #fff;
+}
+section.main footer.comments {
+  margin-top: 1rem;
+  text-align: center;
+}
+section.main footer.comments a.dsq-brlink {
+  margin: 0 auto;
+  font-family: Helvetica Neue, "Segoe UI", "Arial", sans-serif;
 }
 .archives .year {
   border-bottom: 1px solid #e1d7d1;
@@ -671,9 +679,8 @@ section.main kbd {
   content: "";
 }
 .sidebar {
-  box-shadow: -2rem 0 7rem rgba(0, 0, 0, 0.9) inset;
-  background-color: rgba(32, 32, 32, 0.95);
-  color: rgba(255, 255, 255, 0.6);
+  background-color: #333;
+  color: #eee;
 }
 .sidebar ul {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -707,12 +714,12 @@ section.main kbd {
   -webkit-transition-property: left;
   -moz-transition-property: left;
   transition-property: left;
-  -webkit-transition-duration: 0.25s;
-  -moz-transition-duration: 0.25s;
-  transition-duration: 0.25s;
-  -webkit-transition-timing-function: ease-in-out;
-  -moz-transition-timing-function: ease-in-out;
-  transition-timing-function: ease-in-out;
+  -webkit-transition-duration: 0.1s;
+  -moz-transition-duration: 0.1s;
+  transition-duration: 0.1s;
+  -webkit-transition-timing-function: linear;
+  -moz-transition-timing-function: linear;
+  transition-timing-function: linear;
   -webkit-transition-delay: 0s;
   -moz-transition-delay: 0s;
   transition-delay: 0s;
@@ -721,43 +728,43 @@ section.main kbd {
   -webkit-transition-property: left;
   -moz-transition-property: left;
   transition-property: left;
-  -webkit-transition-duration: 0.25s;
-  -moz-transition-duration: 0.25s;
-  transition-duration: 0.25s;
-  -webkit-transition-timing-function: ease-in-out;
-  -moz-transition-timing-function: ease-in-out;
-  transition-timing-function: ease-in-out;
-  -webkit-transition-delay: 0.25s;
-  -moz-transition-delay: 0.25s;
-  transition-delay: 0.25s;
+  -webkit-transition-duration: 0.1s;
+  -moz-transition-duration: 0.1s;
+  transition-duration: 0.1s;
+  -webkit-transition-timing-function: linear;
+  -moz-transition-timing-function: linear;
+  transition-timing-function: linear;
+  -webkit-transition-delay: 0.1s;
+  -moz-transition-delay: 0.1s;
+  transition-delay: 0.1s;
 }
 #sidebar-checkbox ~ .wrap .sidebar-toggle {
   -webkit-transition-property: right, color, background-color;
   -moz-transition-property: right, color, background-color;
   transition-property: right, color, background-color;
-  -webkit-transition-duration: 0.25s, 0s, 0s;
-  -moz-transition-duration: 0.25s, 0s, 0s;
-  transition-duration: 0.25s, 0s, 0s;
-  -webkit-transition-timing-function: ease-in-out;
-  -moz-transition-timing-function: ease-in-out;
-  transition-timing-function: ease-in-out;
-  -webkit-transition-delay: 0.25s, 0.25s, 0.25s;
-  -moz-transition-delay: 0.25s, 0.25s, 0.25s;
-  transition-delay: 0.25s, 0.25s, 0.25s;
+  -webkit-transition-duration: 0.1s, 0s, 0s;
+  -moz-transition-duration: 0.1s, 0s, 0s;
+  transition-duration: 0.1s, 0s, 0s;
+  -webkit-transition-timing-function: linear;
+  -moz-transition-timing-function: linear;
+  transition-timing-function: linear;
+  -webkit-transition-delay: 0.1s, 0.1s, 0.1s;
+  -moz-transition-delay: 0.1s, 0.1s, 0.1s;
+  transition-delay: 0.1s, 0.1s, 0.1s;
 }
 #sidebar-checkbox:checked ~ .wrap .sidebar-toggle {
   -webkit-transition-property: right, color, background-color;
   -moz-transition-property: right, color, background-color;
   transition-property: right, color, background-color;
-  -webkit-transition-duration: 0.25s, 0s, 0s;
-  -moz-transition-duration: 0.25s, 0s, 0s;
-  transition-duration: 0.25s, 0s, 0s;
-  -webkit-transition-timing-function: ease-in-out;
-  -moz-transition-timing-function: ease-in-out;
-  transition-timing-function: ease-in-out;
-  -webkit-transition-delay: 0s, 0.25s, 0.25s;
-  -moz-transition-delay: 0s, 0.25s, 0.25s;
-  transition-delay: 0s, 0.25s, 0.25s;
+  -webkit-transition-duration: 0.1s, 0s, 0s;
+  -moz-transition-duration: 0.1s, 0s, 0s;
+  transition-duration: 0.1s, 0s, 0s;
+  -webkit-transition-timing-function: linear;
+  -moz-transition-timing-function: linear;
+  transition-timing-function: linear;
+  -webkit-transition-delay: 0s, 0.1s, 0.1s;
+  -moz-transition-delay: 0s, 0.1s, 0.1s;
+  transition-delay: 0s, 0.1s, 0.1s;
   right: .5rem;
   color: #fff;
   background-color: rgba(80, 80, 80, 0.8);

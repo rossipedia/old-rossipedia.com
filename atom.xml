@@ -2,13 +2,22 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>Rossipedia</title>
     <id>http://rossipedia.com</id>
-    <updated>2014-01-24T05:50:27Z</updated>
+    <updated>2014-01-24T06:27:54Z</updated>
     <author>
         <name>Bryan J. Ross</name>
         <email>bryan@rossipedia.com</email>
     </author>
     <rights>2014 Bryan Ross. All rights reserved.</rights>
     <generator>Feed for Node.js</generator>
+    <entry>
+        <title type="html"><![CDATA[Redis: I like you, but you're crazy]]></title>
+        <id>http://rossipedia.com/blog/2014/01/redis-i-like-you-but-youre-crazy</id>
+        <link href="http://rossipedia.com/blog/2014/01/redis-i-like-you-but-youre-crazy">
+        </link>
+        <updated>2014-01-23T22:00:00Z</updated>
+        <summary type="html"><![CDATA[<p>Dear <a href="http://redis.io">Redis</a>,</p>
+<p><img src="http://i.imgur.com/fUGHSu1.jpg" alt="I like you, but you&#39;re crazy"></p>]]></summary>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Dependency Injection considered harmful? Not so fast.]]></title>
         <id>http://rossipedia.com/blog/2013/08/dependency-injection-considered-harmful</id>
