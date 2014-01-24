@@ -4,12 +4,12 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>Aaaaaaaand it's gone - Rossipedia</title>
+    <title>ReSharper.VirtualQuickFix Plugin - Rossipedia</title>
     <link rel="shortcut icon" href="http://www.gravatar.com/avatar/74c4a12ee78a7e49b8333a6c78aae47c.png">
     <link rel="stylesheet" type="text/css" href="/styles/main.css">
     <link rel="stylesheet" href="/styles/hl/github.css">
     <script type="text/javascript" src="/scripts/ender.js"></script>
-    <link rel="canonical" href="http://rossipedia.com/blog/2012/11/aaaaaaaand-it-s-gone">
+    <link rel="canonical" href="http://rossipedia.com/blog/2012/11/resharpervirtualquickfix-plugin">
   </head>
   <body>
     <input type="checkbox" id="sidebar-checkbox" class="sidebar-checkbox">
@@ -23,25 +23,66 @@
       <section class="main container">
         <article>
           <header>
-            <h1><a href="/blog/2012/11/aaaaaaaand-it-s-gone">Aaaaaaaand it's gone</a></h1>
-            <time datetime="2012-11-19T08:19:00.000Z">Nov 19 2012</time><a rel="author">Bryan J. Ross</a>
+            <h1><a href="/blog/2012/11/resharpervirtualquickfix-plugin">ReSharper.VirtualQuickFix Plugin</a></h1>
+            <time datetime="2012-11-26T08:03:00.000Z">Nov 26 2012</time><a rel="author">Bryan J. Ross</a>
           </header>
-          <section class="content"><p>Aaaaaaaaaand here we are, up on Github pages and using Octopress.
-Weeee!</p>
-<p>This was actually kind of fun. I think I might actually get some
-blogging done!</p>
+          <section class="content"><p>This is a simple plugin based on <a href="http://hadihariri.com/2010/01/12/writing-plug-ins-for-resharper-part-1-of-undefined/">Hadi Hariri&#39;s blog post</a> on
+creating plugins for <a href="http://www.jetbrains.com/resharper/">ReSharper</a>. I actually had a need for this in
+one of my projects, so I figured I&#39;d try my hand at the plugin.
+Unfortunately, it was written for an older version of ReSharper and
+didn&#39;t translate exactly. So this is an updated version of the plugin
+for ReSharper Version 7.x</p>
+<!-- more -->
+
+<h3 id="features">Features</h3>
+<p>This plugin provides two features:</p>
+<ol>
+<li>Highlights any public method or property that isn&#39;t virtual.</li>
+<li>Provides a QuickFix to make that method or property virtual.</li>
+</ol>
+<p>That&#39;s it!</p>
+<h3 id="versions-supported">Versions Supported</h3>
+<p>This plugin should work with Visual Studio 2010 and 2012, ReSharper
+versions 7.x (unless JetBrains decides to change the plugin API).  I
+have only tested it on VS 2012 + R# 7.0.1 so far. If it doesn&#39;t work
+for you, please feel free to drop me an email and I&#39;ll see what I can
+do.</p>
+<h3 id="installation">Installation</h3>
+<p>I haven&#39;t gotten around to creating an installer for this yet, so
+you&#39;ll have to manually copy the DLL to the correct folder for your
+installation of ReSharper and Visual Studio:</p>
+<p><code>%LOCALAPPDATA%\JetBrains\ReSharper\v7.0\vs10.0</code></p>
+<p>(Replace <strong>v7.0</strong> with <strong>v7.1</strong> for ReSharper 7.1, and <strong>vs10.0</strong> with
+ <strong>vs11.0</strong> for Visual Studio 2012).</p>
+<p>You can download the DLL <a href="https://github.com/downloads/rossipedia/Resharper.VirtualQuickFix/Resharper.VirtualQuickFix-1.0.1.zip">here</a>, or checkout the source on
+<a href="https://github.com/rossipedia/Resharper.VirtualQuickFix">GitHub</a></p>
 
           </section>
           <footer class="comments">
             <div id="disqus_thread"></div>
+            <script type="text/javascript">
+              /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+              if (/rossipedia\.com/.test(location.host)) {
+               var disqus_shortname = 'rossipedia'; // required: replace example with your forum shortname
+               //- var disqus_url = 'http://rossipedia.com/blog/2012/11/resharpervirtualquickfix-plugin';
+               
+               /* * * DON'T EDIT BELOW THIS LINE * * */
+               (function() {
+                 var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                 dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                 (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+               })();
+              }
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></noscript><a href="http://disqus.com" class="dsq-brlink">comments powered by<span class="logo-disqus">Disqus</span></a>
           </footer>
         </article>
       </section>
       <footer class="container">
         <ul class="nav">
-          <li><a href="/blog/2012/11/blog-moving">&lt;</a></li>
+          <li><a href="/blog/2012/11/aaaaaaaand-its-gone">&lt;</a></li>
           <li><a href="/blog/">Archives</a></li>
-          <li><a href="/blog/2012/11/resharper-virtualquickfix-plugin">&gt;</a></li>
+          <li><a href="/blog/2012/12/the-tweet-rule">&gt;</a></li>
         </ul><p>&copy; 2014 content and design by
 <a href="href=&quot;http://rossipedia.com&quot;">Bryan J. Ross</a></p>
 
@@ -63,7 +104,7 @@ blogging done!</p>
             <h2>Recent Posts<a href="/blog/">&nbsp;- more</a></h2>
             <nav class="recent">
               <ul>
-                <li><a href="/blog/2013/08/dependency-injection-considered-harmful-not-so-fast-">Dependency Injection considered harmful? Not so fast.</a></li>
+                <li><a href="/blog/2013/08/dependency-injection-considered-harmful-not-so-fast">Dependency Injection considered harmful? Not so fast.</a></li>
                 <li><a href="/blog/2013/06/ergodox-mechanical-keyboard-review">ErgoDox Mechanical Keyboard Review</a></li>
                 <li><a href="/blog/2013/03/elmah-emails-and-servicestack">Elmah, Emails, and ServiceStack</a></li>
                 <li><a href="/blog/2013/03/simple-api-key-authentication-with-servicestack">Simple API Key Authentication with ServiceStack</a></li>

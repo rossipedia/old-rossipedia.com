@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>Rossipedia</title>
     <id>http://rossipedia.com</id>
-    <updated>2014-01-16T19:04:02Z</updated>
+    <updated>2014-01-24T00:42:11Z</updated>
     <author>
         <name>Bryan J. Ross</name>
         <email>bryan@rossipedia.com</email>
@@ -11,8 +11,8 @@
     <generator>Feed for Node.js</generator>
     <entry>
         <title type="html"><![CDATA[Dependency Injection considered harmful? Not so fast.]]></title>
-        <id>http://rossipedia.com/blog/2013/08/dependency-injection-considered-harmful-not-so-fast-</id>
-        <link href="http://rossipedia.com/blog/2013/08/dependency-injection-considered-harmful-not-so-fast-">
+        <id>http://rossipedia.com/blog/2013/08/dependency-injection-considered-harmful-not-so-fast</id>
+        <link href="http://rossipedia.com/blog/2013/08/dependency-injection-considered-harmful-not-so-fast">
         </link>
         <updated>2013-08-31T16:29:00Z</updated>
         <summary type="html"><![CDATA[<p>A question came up on StackOverflow today:</p>
@@ -135,8 +135,8 @@ to forget. Let me ask a question to demonstrate my point.</p>]]></summary>
     </entry>
     <entry>
         <title type="html"><![CDATA[ReSharper.VirtualQuickFix Plugin]]></title>
-        <id>http://rossipedia.com/blog/2012/11/resharper-virtualquickfix-plugin</id>
-        <link href="http://rossipedia.com/blog/2012/11/resharper-virtualquickfix-plugin">
+        <id>http://rossipedia.com/blog/2012/11/resharpervirtualquickfix-plugin</id>
+        <link href="http://rossipedia.com/blog/2012/11/resharpervirtualquickfix-plugin">
         </link>
         <updated>2012-11-26T08:03:00Z</updated>
         <summary type="html"><![CDATA[<p>This is a simple plugin based on <a href="http://hadihariri.com/2010/01/12/writing-plug-ins-for-resharper-part-1-of-undefined/">Hadi Hariri&#39;s blog post</a> on
@@ -148,8 +148,8 @@ for ReSharper Version 7.x</p>]]></summary>
     </entry>
     <entry>
         <title type="html"><![CDATA[Aaaaaaaand it's gone]]></title>
-        <id>http://rossipedia.com/blog/2012/11/aaaaaaaand-it-s-gone</id>
-        <link href="http://rossipedia.com/blog/2012/11/aaaaaaaand-it-s-gone">
+        <id>http://rossipedia.com/blog/2012/11/aaaaaaaand-its-gone</id>
+        <link href="http://rossipedia.com/blog/2012/11/aaaaaaaand-its-gone">
         </link>
         <updated>2012-11-19T08:19:00Z</updated>
         <summary type="html"><![CDATA[<p>Aaaaaaaaaand here we are, up on Github pages and using Octopress.

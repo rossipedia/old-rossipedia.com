@@ -450,6 +450,7 @@ section.main pre {
 }
 section.main pre code {
   text-shadow: 0 1px white;
+  background-color: transparent;
 }
 section.main table thead {
   border-bottom: 1px solid #dddddd;
