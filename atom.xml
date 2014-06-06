@@ -2,13 +2,23 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>Rossipedia</title>
     <id>http://rossipedia.com</id>
-    <updated>2014-05-14T16:40:34Z</updated>
+    <updated>2014-06-06T06:11:50Z</updated>
     <author>
         <name>Bryan J. Ross</name>
         <email>bryan@rossipedia.com</email>
     </author>
     <rights>2014 Bryan Ross. All rights reserved.</rights>
     <generator>Feed for Node.js</generator>
+    <entry>
+        <title type="html"><![CDATA[Dark Pastels for OSX Terminal]]></title>
+        <id>http://rossipedia.com/blog/2014/06/dark-pastels-for-osx-terminal</id>
+        <link href="http://rossipedia.com/blog/2014/06/dark-pastels-for-osx-terminal">
+        </link>
+        <updated>2014-06-06T05:46:00Z</updated>
+        <summary type="html"><![CDATA[<p>I&#39;ve been working a lot in Ubuntu lately, and my terminal of choice over there
+is the <a href="http://docs.xfce.org/apps/terminal/start">xfce4-terminal</a>, specifically
+for it&#39;s &quot;Dark Pastels&quot; theme.</p>]]></summary>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Redis: I like you, but you're crazy]]></title>
         <id>http://rossipedia.com/blog/2014/01/redis-i-like-you-but-youre-crazy</id>
