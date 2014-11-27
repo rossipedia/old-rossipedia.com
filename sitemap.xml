@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url> <loc>http://rossipedia.com/blog/2014/11/embedded-razor-that-doesnt-suck</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
 <url> <loc>http://rossipedia.com/blog/2014/06/dark-pastels-for-osx-terminal</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
 <url> <loc>http://rossipedia.com/blog/2014/01/redis-i-like-you-but-youre-crazy</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
 <url> <loc>http://rossipedia.com/blog/2013/08/dependency-injection-considered-harmful</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
@@ -25,6 +26,7 @@
 <url> <loc>http://rossipedia.com/blog/2012/03/hello-there</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
 <url> <loc>http://rossipedia.com/blog</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
 <url> <loc>http://rossipedia.com/blog/2014/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://rossipedia.com/blog/2014/11/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
 <url> <loc>http://rossipedia.com/blog/2014/06/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
 <url> <loc>http://rossipedia.com/blog/2014/01/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
 <url> <loc>http://rossipedia.com/blog/2013/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>

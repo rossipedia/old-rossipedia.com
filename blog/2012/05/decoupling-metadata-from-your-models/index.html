@@ -37,24 +37,24 @@ multiple projects, but each project has it’s own validation rules.</p>
 DataAnnotations attributes. The standard way of decoupling your
 DataAnnotations and models is the MetadataTypeAttribute. You use it
 like so:</p>
-<pre><code class="lang-csharp">using System;
-using System.ComponentModel.DataAnnotations;
-[MetadataType(typeof(AddressMeta))]
-public class Address
+<pre><code class="csharp"><span class="hljs-keyword">using</span> System;
+<span class="hljs-keyword">using</span> System.ComponentModel.DataAnnotations;
+[MetadataType(<span class="hljs-keyword">typeof</span>(AddressMeta))]
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Address</span>
 {
-  public int Id { get; set; }
-  public string Address1 { get; set; }
-  public string Address2 { get; set; }
-  public string City { get; set; }
-  public string State { get; set; }
-  public string Zip { get; set; }
-  public class AddressMeta
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> Id { <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; }
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Address1 { <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; }
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Address2 { <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; }
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> City { <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; }
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> State { <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; }
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Zip { <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; }
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">AddressMeta</span>
   {
     [Required]
-    public int Id;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> Id;
     [Required]
-    public string Address1;
-    /* etc. etc. */
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Address1;
+    <span class="hljs-comment">/* etc. etc. */</span>
   }
 }
 </code></pre>
@@ -68,26 +68,26 @@ attributes, and just specify them somewhere else? Turns out, that’s
 pretty easy.</p>
 <h2 id="throwing-it-in-reverse">Throwing it in reverse</h2>
 <p>What I want to do is something like this:</p>
-<pre><code class="lang-csharp">using System;
-using System.ComponentModel.DataAnnotations;
-public class Address
+<pre><code class="csharp"><span class="hljs-keyword">using</span> System;
+<span class="hljs-keyword">using</span> System.ComponentModel.DataAnnotations;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Address</span>
 {
-  public int Id { get; set; }
-  public string Address1 { get; set; }
-  public string Address2 { get; set; }
-  public string City { get; set; }
-  public string State { get; set; }
-  public string Zip { get; set; }
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> Id { <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; }
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Address1 { <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; }
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Address2 { <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; }
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> City { <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; }
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> State { <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; }
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Zip { <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; }
 }
 
-[MetadataFor(typeof(Address))]
-public class AddressMeta
+[MetadataFor(<span class="hljs-keyword">typeof</span>(Address))]
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">AddressMeta</span>
 {
   [Required]
-  public int Id;
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> Id;
   [Required]
-  public string Address1;
-  /* etc. etc. */
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Address1;
+  <span class="hljs-comment">/* etc. etc. */</span>
 }
 </code></pre>
 <p>MVC allows for an amazing amount of customization. It uses a Provider
@@ -97,89 +97,89 @@ require adding a specialized provider.</p>
 <p>First, we’re going to need a custom attribute for marking the Metadata
 classes, and then we’ll need a provider for both Metadata, and for
 Validators. The code is as follows:</p>
-<pre><code class="lang-csharp">[AttributeUsage(AttributeTargets.Class)]
-public class MetadataForAttribute : Attribute
+<pre><code class="csharp">[AttributeUsage(AttributeTargets.Class)]
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">MetadataForAttribute</span> : <span class="hljs-title">Attribute</span>
 {
-  public MetadataForAttribute() {}
-  public MetadataForAttribute(Type forType) { ForType = forType;
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">MetadataForAttribute</span><span class="hljs-params">()</span> </span>{}
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">MetadataForAttribute</span><span class="hljs-params">(Type forType)</span> </span>{ ForType = forType;
   }
-  public Type ForType { get; set; }
-  public static Type GetTargetType(Type fromType)
-  {
-    var attr =
+  <span class="hljs-keyword">public</span> Type ForType { <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; }
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Type <span class="hljs-title">GetTargetType</span><span class="hljs-params">(Type fromType)</span>
+  </span>{
+    <span class="hljs-keyword">var</span> attr =
       (MetadatForAttribute)Attribute.GetCustomAttribute(fromType,
-          typeof(MetadataForAttribute));
-    return attr.ForType;
+          <span class="hljs-keyword">typeof</span>(MetadataForAttribute));
+    <span class="hljs-keyword">return</span> attr.ForType;
   }
 }
 
-public class MetadataForMetadataProvider :
-  DataAnnotationsModelMetadataProvider
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">MetadataForMetadataProvider</span> :
+  <span class="hljs-title">DataAnnotationsModelMetadataProvider</span>
 {
-  public Dictionary MetadataTypeMap { get; private set; }
+  <span class="hljs-keyword">public</span> Dictionary MetadataTypeMap { <span class="hljs-keyword">get</span>; <span class="hljs-keyword">private</span> <span class="hljs-keyword">set</span>; }
 
-  public MetadataForMetadataProvider()
-  {
-    var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-    var allTypes = assemblies.SelectMany(a =&gt; a.GetTypes());
-    var metadataTypes = allTypes.Where(
-        t =&gt; Attribute.IsDefined(t, typeof(MetadataForAttribute))).ToList();
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">MetadataForMetadataProvider</span><span class="hljs-params">()</span>
+  </span>{
+    <span class="hljs-keyword">var</span> assemblies = AppDomain.CurrentDomain.GetAssemblies();
+    <span class="hljs-keyword">var</span> allTypes = assemblies.SelectMany(a =&gt; a.GetTypes());
+    <span class="hljs-keyword">var</span> metadataTypes = allTypes.Where(
+        t =&gt; Attribute.IsDefined(t, <span class="hljs-keyword">typeof</span>(MetadataForAttribute))).ToList();
     MetadataTypeMap = metadataTypes.ToDictionary(
         MetadataForAttribute.GetTargetType,
         t =&gt; t);
   }
 
-  public MetadataForMetadataProvider(Dictionary typeMap)
-  {
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">MetadataForMetadataProvider</span><span class="hljs-params">(Dictionary typeMap)</span>
+  </span>{
     MetadataTypeMap = typeMap;
   }
 
-  protected override ICustomTypeDescriptor
-    GetTypeDescriptor(Type type)
-    {
-      if (MetadataTypeMap.ContainsKey(type))
+  <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">override</span> ICustomTypeDescriptor
+    <span class="hljs-title">GetTypeDescriptor</span><span class="hljs-params">(Type type)</span>
+    </span>{
+      <span class="hljs-keyword">if</span> (MetadataTypeMap.ContainsKey(type))
       {
-        var provider = new AssociatedMetadataTypeTypeDescriptionProvider(type, MetadataTypeMap[type]);
-        return provider.GetTypeDescriptor(type);
+        <span class="hljs-keyword">var</span> provider = <span class="hljs-keyword">new</span> AssociatedMetadataTypeTypeDescriptionProvider(type, MetadataTypeMap[type]);
+        <span class="hljs-keyword">return</span> provider.GetTypeDescriptor(type);
       }
-      else
-        return base.GetTypeDescriptor(type);
+      <span class="hljs-keyword">else</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">base</span>.GetTypeDescriptor(type);
     }
 }
 
-public class MetadataForValidatorProvider :
-  DataAnnotationsModelValidatorProvider
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">MetadataForValidatorProvider</span> :
+  <span class="hljs-title">DataAnnotationsModelValidatorProvider</span>
 {
-  public Dictionary MetadataTypeMap { get; private set; }
+  <span class="hljs-keyword">public</span> Dictionary MetadataTypeMap { <span class="hljs-keyword">get</span>; <span class="hljs-keyword">private</span> <span class="hljs-keyword">set</span>; }
 
-  public MetadataForValidatorProvider()
-  {
-    var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-    var allTypes = assemblies.SelectMany(a =&gt; a.GetTypes());
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">MetadataForValidatorProvider</span><span class="hljs-params">()</span>
+  </span>{
+    <span class="hljs-keyword">var</span> assemblies = AppDomain.CurrentDomain.GetAssemblies();
+    <span class="hljs-keyword">var</span> allTypes = assemblies.SelectMany(a =&gt; a.GetTypes());
 
-    var metadataTypes = allTypes.Where(
-        t =&gt; Attribute.IsDefined(t, typeof(MetadataForAttribute))).ToList();
+    <span class="hljs-keyword">var</span> metadataTypes = allTypes.Where(
+        t =&gt; Attribute.IsDefined(t, <span class="hljs-keyword">typeof</span>(MetadataForAttribute))).ToList();
 
     MetadataTypeMap = metadataTypes.ToDictionary(
         MetadataForAttribute.GetTargetType,
         t =&gt; t);
   }
 
-  public MetadataForValidatorProvider(Dictionary typeMap)
-  {
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">MetadataForValidatorProvider</span><span class="hljs-params">(Dictionary typeMap)</span>
+  </span>{
     MetadataTypeMap = typeMap;
   }
 
-  protected override ICustomTypeDescriptor
-    GetTypeDescriptor(Type type)
-    {
-      if (MetadataTypeMap.ContainsKey(type))
+  <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">override</span> ICustomTypeDescriptor
+    <span class="hljs-title">GetTypeDescriptor</span><span class="hljs-params">(Type type)</span>
+    </span>{
+      <span class="hljs-keyword">if</span> (MetadataTypeMap.ContainsKey(type))
       {
-        var provider = new AssociatedMetadataTypeTypeDescriptionProvider(type, MetadataTypeMap[type]);
-        return provider.GetTypeDescriptor(type);
+        <span class="hljs-keyword">var</span> provider = <span class="hljs-keyword">new</span> AssociatedMetadataTypeTypeDescriptionProvider(type, MetadataTypeMap[type]);
+        <span class="hljs-keyword">return</span> provider.GetTypeDescriptor(type);
       }
-      else
-        return base.GetTypeDescriptor(type);
+      <span class="hljs-keyword">else</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">base</span>.GetTypeDescriptor(type);
     }
 }
 </code></pre>
@@ -188,52 +188,52 @@ straightforward, easy to debug, and only incurs a one time cost at
 application startup. Registering these providers is relatively simple.
 Just add the following to your Global.asax.cs (or, god forbid
 Global.asax.vb *YUCK*), in the Application_Starup method:</p>
-<pre><code class="lang-csharp">var metadataForProvider = new MetadataForMetadataProvider();
+<pre><code class="csharp"><span class="hljs-keyword">var</span> metadataForProvider = <span class="hljs-keyword">new</span> MetadataForMetadataProvider();
 ModelMetadataProviders.Current = metadataForProvider;
 providers.Clear();
-providers.Add(new MetadataForValidatorProvider(metadataForProvider.MetadataTypeMap));
+providers.Add(<span class="hljs-keyword">new</span> MetadataForValidatorProvider(metadataForProvider.MetadataTypeMap));
 </code></pre>
 <p>And voila. Note, that this will also work with model hierarchies. Say
 you want to extend a model into something like an AddressViewModel
 with additional properties, perhaps for custom formatting, etc.. The
 following will do the trick just nicely:</p>
-<pre><code class="lang-csharp">public class Contact
+<pre><code class="csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Contact</span>
 {
-  public int Id { get; set; }
-  public string FirstName { get; set; }
-  public string LastName { get; set; }
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> Id { <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; }
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> FirstName { <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; }
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> LastName { <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; }
 }
 
-public class ContactViewModel : Contact
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">ContactViewModel</span> : <span class="hljs-title">Contact</span>
 {
-  public string FullName
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> FullName
   {
-    get { return FirstName + &quot; &quot; + LastName; }
-    set
+    <span class="hljs-keyword">get</span> { <span class="hljs-keyword">return</span> FirstName + <span class="hljs-string">" "</span> + LastName; }
+    <span class="hljs-keyword">set</span>
     {
-      var parts = value.Split(new [] { &#39; &#39; }, 2);
+      <span class="hljs-keyword">var</span> parts = <span class="hljs-keyword">value</span>.Split(<span class="hljs-keyword">new</span> [] { <span class="hljs-string">' '</span> }, <span class="hljs-number">2</span>);
       FirstName = parts;
       LastName = parts;
     }
   }
 }
 
-[MetadataFor(typeof(Contact))]
-public class ContactMeta
+[MetadataFor(<span class="hljs-keyword">typeof</span>(Contact))]
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">ContactMeta</span>
 {
   [Required]
-    public int Id;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> Id;
   [Required]
-    public string FirstName;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> FirstName;
   [Required]
-    public string LastName;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> LastName;
 }
 
-[MetadataFor(typeof(ContactViewModel))]
-public class ContactViewModelMeta : ContactMeta
+[MetadataFor(<span class="hljs-keyword">typeof</span>(ContactViewModel))]
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">ContactViewModelMeta</span> : <span class="hljs-title">ContactMeta</span>
 {
-  [Description(&quot;Full Name&quot;)]
-    public string FullName;
+  [Description(<span class="hljs-string">"Full Name"</span>)]
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> FullName;
 }
 </code></pre>
 
@@ -284,11 +284,11 @@ public class ContactViewModelMeta : ContactMeta
             <h2>Recent Posts<a href="/blog/">&nbsp;- more</a></h2>
             <nav class="recent">
               <ul>
+                <li><a href="/blog/2014/11/embedded-razor-that-doesnt-suck">Embedded Razor that doesn't suck</a></li>
                 <li><a href="/blog/2014/06/dark-pastels-for-osx-terminal">Dark Pastels for OSX Terminal</a></li>
                 <li><a href="/blog/2014/01/redis-i-like-you-but-youre-crazy">Redis: I like you, but you're crazy</a></li>
                 <li><a href="/blog/2013/08/dependency-injection-considered-harmful">Dependency Injection considered harmful? Not so fast.</a></li>
                 <li><a href="/blog/2013/06/ergodox-mechanical-keyboard-review">ErgoDox Mechanical Keyboard Review</a></li>
-                <li><a href="/blog/2013/03/elmah-emails-and-servicestack">Elmah, Emails, and ServiceStack</a></li>
                 <li><a href="/blog/">More...</a></li>
               </ul>
             </nav>
@@ -309,7 +309,6 @@ public class ContactViewModelMeta : ContactMeta
         </section>
       </section>
     </section>
-    <script src="/scripts/hl/highlight.pack.js"></script>
     <script type="text/javascript" src="/scripts/rossipedia.js"></script>
   </body>
 </html>

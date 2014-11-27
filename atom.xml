@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>Rossipedia</title>
-    <id>http://rossipedia.com</id>
-    <updated>2014-06-06T06:11:50Z</updated>
+    <link>http://rossipedia.com</link>
+    <updated>2014-11-27T00:45:19Z</updated>
     <author>
         <name>Bryan J. Ross</name>
         <email>bryan@rossipedia.com</email>
     </author>
+    <link rel="alternate" href="http://rossipedia.com"/>
+    <link rel="self" href="atom.xml"/>
     <rights>2014 Bryan Ross. All rights reserved.</rights>
     <generator>Feed for Node.js</generator>
+    <entry>
+        <title type="html"><![CDATA[Embedded Razor that doesn't suck]]></title>
+        <id>http://rossipedia.com/blog/2014/11/embedded-razor-that-doesnt-suck</id>
+        <link href="http://rossipedia.com/blog/2014/11/embedded-razor-that-doesnt-suck">
+        </link>
+        <updated>2014-11-26T00:15:00Z</updated>
+        <summary type="html"><![CDATA[<p>Recently I had need to integrate a templating system into the project I&#39;m
+working on, because <a href="https://razorgenerator.codeplex.com/">designers like that kind of thing</a>. Being a primarily
+.NET shop, our defacto HTML generation language here at Stack Exchange is Razor.</p>
+<p>What&#39;s the big deal? Well, these templates need to live in a library that
+doesn&#39;t depend on <code>System.Web</code> (that is: <em>not</em> an ASP.net project). </p>]]></summary>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Dark Pastels for OSX Terminal]]></title>
         <id>http://rossipedia.com/blog/2014/06/dark-pastels-for-osx-terminal</id>
@@ -139,16 +153,16 @@ to forget. Let me ask a question to demonstrate my point.</p>]]></summary>
         </link>
         <updated>2012-12-11T07:00:00Z</updated>
         <summary type="html"><![CDATA[<p>I ran across this lovely little interface method today:</p>
-<pre><code class="lang-csharp">public interface IOrderProcessor
+<pre><code class="csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title">IOrderProcessor</span>
 {
-  TransactionResponse CreateOrder(
+  <span class="hljs-function">TransactionResponse <span class="hljs-title">CreateOrder</span><span class="hljs-params">(
       Cart cart,
-      string email,
+      <span class="hljs-keyword">string</span> email,
       Payment payment,
       Address billingAddress,
       Address shippingAddress,
-      string notes,
-      int orderId);
+      <span class="hljs-keyword">string</span> notes,
+      <span class="hljs-keyword">int</span> orderId)</span></span>;
 }
 </code></pre>]]></summary>
     </entry>

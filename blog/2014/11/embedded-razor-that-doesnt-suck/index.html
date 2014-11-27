@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Embedded Razor that doesn't suck - Rossipedia</title>
+    <link rel="shortcut icon" href="http://www.gravatar.com/avatar/74c4a12ee78a7e49b8333a6c78aae47c.png">
+    <link rel="stylesheet" type="text/css" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/hl/github.css">
+    <script type="text/javascript" src="/scripts/ender.js"></script>
+    <link rel="canonical" href="http://rossipedia.com/blog/2014/11/embedded-razor-that-doesnt-suck">
+  </head>
+  <body>
+    <input type="checkbox" id="sidebar-checkbox" class="sidebar-checkbox">
+    <section class="wrap">
+      <section class="masthead">
+        <header role="banner" class="container">
+          <h1><a href="/">Rossipedia</a></h1>
+          <h2>Code, music, and other junk</h2>
+        </header>
+      </section>
+      <section class="main container">
+        <article>
+          <header>
+            <h1><a href="/blog/2014/11/embedded-razor-that-doesnt-suck">Embedded Razor that doesn't suck</a></h1>
+            <time datetime="2014-11-26T00:15:00.000Z">Nov 25 2014</time><a rel="author">Bryan J. Ross</a>
+          </header>
+          <section class="content"><p>Recently I had need to integrate a templating system into the project I&#39;m
+working on, because <a href="https://razorgenerator.codeplex.com/">designers like that kind of thing</a>. Being a primarily
+.NET shop, our defacto HTML generation language here at Stack Exchange is Razor.</p>
+<p>What&#39;s the big deal? Well, these templates need to live in a library that
+doesn&#39;t depend on <code>System.Web</code> (that is: <em>not</em> an ASP.net project). </p>
+<!-- more -->
+
+<h2 id="razorgenerator">RazorGenerator</h2>
+<p>There are a couple options when it comes to embedding Razor templates into your library.
+For this example, I&#39;m going to use <a href="https://razorgenerator.codeplex.com/">RazorGenerator</a>. Searching for
+RazorGenerator in the Nuget Package manager yields about a handful of results:</p>
+<p><img src="/assets/razorgenerator-results.png" alt="RazorGenerator search results"></p>
+<p>Go ahead and pick <code>RazorGenerator.MsBuild</code>. This enables the compilation of
+Razor as a build step.</p>
+<p>To test this out, go ahead and add a new <code>Test.cshtml</code> file. You&#39;ll need to add
+it by adding a new Text file and naming it <code>Test.cshtml</code>, as class library
+projects don&#39;t have the right settings for adding a Razor View directly. Enter
+the following content:</p>
+<pre><code class="html">@* Generator: Template *@
+
+<span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>Hello, there!<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+</code></pre>
+<p>The <code>Generator: Template</code> directive at the top of the file tells RazorGenerator what type
+of generator to use, in this case just a basic template with no bells and
+whistles (for other types, see the <a href="https://razorgenerator.codeplex.com/">home page</a>).</p>
+<p>Okay, try to build again. BOOM: </p>
+<pre><code class="nohighlight">error CS0246: The type or namespace name &#39;RazorGenerator&#39; could not be found
+</code></pre>
+<p>This is because by default, RazorGenerator creates templates that inherit from
+<code>RazorGenerator.Templating.RazorTemplateBase</code>, which is provided by the
+<strong>RazorEngine.Templating</strong> nuget package. However, I wanted to have complete
+control over my templates, so we&#39;ll just skip over that part, and tell our template
+to inherit from a custom base class:</p>
+<pre><code class="html">@* Generator: Template *@
+@inherits RazorLibrary.MyTemplate
+
+<span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>Hello, there!<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+</code></pre>
+<p>And <code>MyTemplate.cs</code> looks like this:</p>
+<pre><code class="csharp"><span class="hljs-keyword">using</span> System.IO;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">class</span> <span class="hljs-title">MyTemplate</span>
+{
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">readonly</span> StringWriter _writer = <span class="hljs-keyword">new</span> StringWriter();
+
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Execute</span><span class="hljs-params">()</span></span>;
+
+  <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">WriteLiteral</span><span class="hljs-params">(<span class="hljs-keyword">string</span> text)</span>
+  </span>{
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">string</span>.IsNullOrEmpty(text))
+      <span class="hljs-keyword">return</span>;
+
+    _writer.Write(text);
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Write</span><span class="hljs-params">(<span class="hljs-keyword">object</span> <span class="hljs-keyword">value</span>)</span>
+  </span>{
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">value</span> == <span class="hljs-keyword">null</span>)
+      <span class="hljs-keyword">return</span>;
+
+    _writer.Write(<span class="hljs-keyword">value</span>);
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">string</span> <span class="hljs-title">ToString</span><span class="hljs-params">()</span>
+  </span>{
+    <span class="hljs-keyword">return</span> _writer.ToString();
+  }
+}
+</code></pre>
+<h2 id="what-s-going-on">What&#39;s going on</h2>
+<p>A couple of things to note:</p>
+<ol>
+<li><p>The generated template has a method <code>override void Execute()</code>, in which all
+the output gets rendered, which is why the base class has a <code>abstract void
+Execute();</code> method declared.</p>
+</li>
+<li><p>All the literal content (HTML tags/text, etc) is written by calling a <code>void
+Write(string)</code> method. Our implementation simply writes the text to a
+<code>System.IO.StringWriter</code> instance.</p>
+</li>
+<li><p>All values (eg: @somevar) get written using a <code>void Write(object)</code> method.
+Implementation is the same as above.</p>
+</li>
+<li><p>We override <code>ToString</code> to get at the rendered output.</p>
+</li>
+</ol>
+<p>As it stands, right now we have a functional template. We can create an
+instance of it, execute it, and get the output:</p>
+<pre><code class="csharp"><span class="hljs-comment">// The class name is the name of the .cshtml file</span>
+<span class="hljs-comment">// in this case, it's Test.cshtml</span>
+<span class="hljs-keyword">var</span> template = <span class="hljs-keyword">new</span> Test();
+template.Execute();
+Console.WriteLine(template.ToString());
+</code></pre>
+<p>Neat!</p>
+<p>However, this is a pretty useless template. There&#39;s no way to pass in data for
+the template to render! Let&#39;s make some changes to allow that.</p>
+<h2 id="generalizin-">Generalizin&#39;</h2>
+<p>First things first, let&#39;s make our base template class a bit more flexible. I&#39;ll
+rename it from the illustriously named <code>MyTemplate</code>, to <code>Template</code>, and we&#39;ll
+make it generic. The type passed in will represent the type of the data that is
+used to render the template. We&#39;ll supply this data via a <code>Model</code> property.</p>
+<p><em><strong>Note</strong>: While generally I prefer passing this kind of data in via the
+constructor, doing things that way using RazorGenerator is, well, less than
+comfortable.</em></p>
+<p>Our base template class now looks like this:</p>
+<pre><code class="csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Template</span>&lt;<span class="hljs-title">TData</span>&gt;
+{
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">readonly</span> StringWriter _writer = <span class="hljs-keyword">new</span> StringWriter();
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">readonly</span> TData _data;
+
+  <span class="hljs-keyword">public</span> TData Model { <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; }
+
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Execute</span><span class="hljs-params">()</span></span>;
+
+  <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">WriteLiteral</span><span class="hljs-params">(<span class="hljs-keyword">string</span> text)</span>
+  </span>{
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">string</span>.IsNullOrEmpty(text))
+      <span class="hljs-keyword">return</span>;
+
+    _writer.Write(text);
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Write</span><span class="hljs-params">(<span class="hljs-keyword">object</span> <span class="hljs-keyword">value</span>)</span>
+  </span>{
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">value</span> == <span class="hljs-keyword">null</span>)
+      <span class="hljs-keyword">return</span>;
+
+    _writer.Write(<span class="hljs-keyword">value</span>);
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">string</span> <span class="hljs-title">ToString</span><span class="hljs-params">()</span>
+  </span>{
+    <span class="hljs-keyword">return</span> _writer.ToString();
+  }
+}
+</code></pre>
+<p>Then, let&#39;s define the data we want to render:</p>
+<pre><code class="csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Person</span>
+{
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Name { <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; }
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> Age { <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; }
+}
+</code></pre>
+<p>Finally, let&#39;s rename <code>Test.cshtml</code> to <code>PersonTemplate.cshtml</code>, and update
+it:</p>
+<pre><code class="html">@* Generator: Template *@
+@inherits RazorLibrary.Template<span class="hljs-tag">&lt;<span class="hljs-title">RazorLibrary.Person</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>Hi!<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>The person named @Model.Name is @Model.Age years old.<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+</code></pre>
+<p>And that&#39;s about it! You now have a library project that exposes templates,
+without any dependency on <code>System.Web</code>.</p>
+<p>For example:</p>
+<pre><code class="csharp"><span class="hljs-keyword">using</span> RazorLibrary;
+
+<span class="hljs-keyword">var</span> person = <span class="hljs-keyword">new</span> Person { 
+    Name = <span class="hljs-string">"John Doe"</span>,
+    Age = <span class="hljs-number">34</span>
+};
+
+<span class="hljs-keyword">var</span> template = <span class="hljs-keyword">new</span> PersonTemplate {
+  Model = person
+};
+template.Execute();
+Console.WriteLine(template.ToString());
+</code></pre>
+<p>Hope you find this useful. Happy coding!</p>
+
+          </section>
+          <footer class="comments">
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+              /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+              if (/rossipedia\.com/.test(location.host)) {
+               var disqus_shortname = 'rossipedia'; // required: replace example with your forum shortname
+               //- var disqus_url = 'http://rossipedia.com/blog/2014/11/embedded-razor-that-doesnt-suck';
+               
+               /* * * DON'T EDIT BELOW THIS LINE * * */
+               (function() {
+                 var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                 dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                 (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+               })();
+              }
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></noscript><a href="http://disqus.com" class="dsq-brlink">comments powered by<span class="logo-disqus">Disqus</span></a>
+          </footer>
+        </article>
+      </section>
+      <footer class="container">
+        <ul class="nav">
+          <li><a href="/blog/2014/06/dark-pastels-for-osx-terminal">&lt;</a></li>
+          <li><a href="/blog/">Archives</a></li>
+          <li><a disabled="disabled">&gt;</a></li>
+        </ul><p>&copy; 2014 content and design by
+<a href="href=&quot;http://rossipedia.com&quot;">Bryan J. Ross</a></p>
+
+      </footer>
+      <section class="sidebar-wrap">
+        <label class="sidebar-toggle"></label>
+        <section class="sidebar">
+          <aside>
+            <p>Code MacGuyver @ <a href="http://stackexchange.com" target="_blank">StackExchange</a></p>
+            <p>I've been known to play and record music.</p>
+          </aside>
+          <section class="search">
+            <form action="http://google.com/search" method="get" class="search">
+              <input type="hidden" name="q" value="site:rossipedia.com">
+              <input type="text" name="q" placeholder="Search..." class="search"><span class="rss"><a href="atom.xml" title="Subscribe to the RSS feed">RSS</a></span>
+            </form>
+          </section>
+          <section>
+            <h2>Recent Posts<a href="/blog/">&nbsp;- more</a></h2>
+            <nav class="recent">
+              <ul>
+                <li><a href="/blog/2014/11/embedded-razor-that-doesnt-suck">Embedded Razor that doesn't suck</a></li>
+                <li><a href="/blog/2014/06/dark-pastels-for-osx-terminal">Dark Pastels for OSX Terminal</a></li>
+                <li><a href="/blog/2014/01/redis-i-like-you-but-youre-crazy">Redis: I like you, but you're crazy</a></li>
+                <li><a href="/blog/2013/08/dependency-injection-considered-harmful">Dependency Injection considered harmful? Not so fast.</a></li>
+                <li><a href="/blog/2013/06/ergodox-mechanical-keyboard-review">ErgoDox Mechanical Keyboard Review</a></li>
+                <li><a href="/blog/">More...</a></li>
+              </ul>
+            </nav>
+          </section>
+          <section class="stackoverflow"><a href="http://stackoverflow.com/users/115049/rossipedia"><img src="http://stackoverflow.com/users/flair/115049.png?theme=dark" width="208" height="58" alt="profile for rossipedia at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for rossipedia at Stack Overflow, Q&amp;A for professional and enthusiast programmers"></a></section>
+          <section class="github">
+            <h2><a href="http://github.com/rossipedia">@rossipedia on GitHub</a></h2>
+            <nav class="repos">
+              <ul id="gh_repos">
+                <li class="loading"><a>Status updating...</a></li>
+              </ul>
+            </nav>
+            <script type="text/javascript" src="/scripts/github.js"></script>
+          </section>
+          <section class="twitter"><a href="https://twitter.com/rossipedia" data-widget-id="381923369030934528" class="twitter-timeline">Tweets by @rossipedia</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+          </section>
+        </section>
+      </section>
+    </section>
+    <script type="text/javascript" src="/scripts/rossipedia.js"></script>
+  </body>
+</html>

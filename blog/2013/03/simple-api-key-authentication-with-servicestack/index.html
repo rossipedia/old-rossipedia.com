@@ -34,16 +34,16 @@ HTTP headers and a simple pre-shared key.</p>
 <p>Let&#39;s just dive right in, shall we?</p>
 <p>First thing&#39;s first, let&#39;s add a RequestFilter to perform the
 validation by extracting the key from a custom HTTP header:</p>
-<pre><code class="lang-csharp">// AppHost.cs
-public class AppHost : AppHostBase
+<pre><code class="csharp"><span class="hljs-comment">// AppHost.cs</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">AppHost</span> : <span class="hljs-title">AppHostBase</span>
 {
-  public override void Configure(Container container)
-  {
-    this.RequestFilters.Add((req, res, dto) =&gt; {
-        var apiKey = req.Headers[&quot;X-ApiKey&quot;];
-        if (apiKey == null || !Clients.VerifyKey(apiKey))
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Configure</span><span class="hljs-params">(Container container)</span>
+  </span>{
+    <span class="hljs-keyword">this</span>.RequestFilters.Add((req, res, dto) =&gt; {
+        <span class="hljs-keyword">var</span> apiKey = req.Headers[<span class="hljs-string">"X-ApiKey"</span>];
+        <span class="hljs-keyword">if</span> (apiKey == <span class="hljs-keyword">null</span> || !Clients.VerifyKey(apiKey))
         {
-          throw HttpError.Unauthorized(&quot;Unauthorized&quot;);
+          <span class="hljs-keyword">throw</span> HttpError.Unauthorized(<span class="hljs-string">"Unauthorized"</span>);
         }
     });
   }
@@ -51,73 +51,73 @@ public class AppHost : AppHostBase
 </code></pre>
 <p>This static class we use to verify the key is valid, by checking
 against a custom <code>ConfigurationSection</code> (defined shortly):</p>
-<pre><code class="lang-csharp">// Clients.cs
-public static class Clients
+<pre><code class="csharp"><span class="hljs-comment">// Clients.cs</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Clients</span>
 {
-  private static Lazy&lt;ClientSection&gt; section = new Lazy&lt;ClientSection&gt;(() =&gt;
-        (ClientSection)ConfigurationManager.GetSection(&quot;apiClients&quot;));
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> Lazy&lt;ClientSection&gt; section = <span class="hljs-keyword">new</span> Lazy&lt;ClientSection&gt;(() =&gt;
+        (ClientSection)ConfigurationManager.GetSection(<span class="hljs-string">"apiClients"</span>));
 
-  public static bool VerifyKey(string apiKey)
-  {
-    return section.Value.Clients.Cast&lt;ClientSection.ClientElement&gt;()
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">bool</span> <span class="hljs-title">VerifyKey</span><span class="hljs-params">(<span class="hljs-keyword">string</span> apiKey)</span>
+  </span>{
+    <span class="hljs-keyword">return</span> section.Value.Clients.Cast&lt;ClientSection.ClientElement&gt;()
            .Any(ce =&gt; ce.ApiKey == apiKey);
   }
 }
 </code></pre>
 <p>And the custom <code>ConfigurationSection</code> is as follows:</p>
-<pre><code class="lang-csharp">// ClientSection.cs
-using System.Configuration;
+<pre><code class="csharp"><span class="hljs-comment">// ClientSection.cs</span>
+<span class="hljs-keyword">using</span> System.Configuration;
 
-public class ClientSection : ConfigurationSection
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">ClientSection</span> : <span class="hljs-title">ConfigurationSection</span>
 {
-  [ConfigurationProperty(&quot;clients&quot;)]
-  public ClientElementCollection Clients
+  [ConfigurationProperty(<span class="hljs-string">"clients"</span>)]
+  <span class="hljs-keyword">public</span> ClientElementCollection Clients
   {
-    get { return (ClientElementCollection)base[&quot;clients&quot;]; }
+    <span class="hljs-keyword">get</span> { <span class="hljs-keyword">return</span> (ClientElementCollection)<span class="hljs-keyword">base</span>[<span class="hljs-string">"clients"</span>]; }
   }
 
-  public class ClientElement : ConfigurationElement
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">ClientElement</span> : <span class="hljs-title">ConfigurationElement</span>
   {
-    [ConfigurationProperty(&quot;apiKey&quot;, IsRequired = true)]
-    public string ApiKey
+    [ConfigurationProperty(<span class="hljs-string">"apiKey"</span>, IsRequired = <span class="hljs-keyword">true</span>)]
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> ApiKey
     {
-      get { return (string)base[&quot;apiKey&quot;]; }
-      set { base[&quot;apiKey&quot;] = value; }
+      <span class="hljs-keyword">get</span> { <span class="hljs-keyword">return</span> (<span class="hljs-keyword">string</span>)<span class="hljs-keyword">base</span>[<span class="hljs-string">"apiKey"</span>]; }
+      <span class="hljs-keyword">set</span> { <span class="hljs-keyword">base</span>[<span class="hljs-string">"apiKey"</span>] = <span class="hljs-keyword">value</span>; }
     }
 
-    [ConfigurationProperty(&quot;name&quot;, IsRequired = true)]
-    public string Name
+    [ConfigurationProperty(<span class="hljs-string">"name"</span>, IsRequired = <span class="hljs-keyword">true</span>)]
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Name
     {
-      get { return (string)base[&quot;name&quot;]; }
-      set { base[&quot;name&quot;] = value; }
+      <span class="hljs-keyword">get</span> { <span class="hljs-keyword">return</span> (<span class="hljs-keyword">string</span>)<span class="hljs-keyword">base</span>[<span class="hljs-string">"name"</span>]; }
+      <span class="hljs-keyword">set</span> { <span class="hljs-keyword">base</span>[<span class="hljs-string">"name"</span>] = <span class="hljs-keyword">value</span>; }
     }
   }
 
-  public class ClientElementCollection : ConfigurationElementCollection
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">ClientElementCollection</span> : <span class="hljs-title">ConfigurationElementCollection</span>
   {
-    public override ConfigurationElementCollectionType CollectionType
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> ConfigurationElementCollectionType CollectionType
     {
-      get { return ConfigurationElementCollectionType.BasicMap; }
+      <span class="hljs-keyword">get</span> { <span class="hljs-keyword">return</span> ConfigurationElementCollectionType.BasicMap; }
     }
 
-    public ClientElement this[object key]
+    <span class="hljs-keyword">public</span> ClientElement <span class="hljs-keyword">this</span>[<span class="hljs-keyword">object</span> key]
     {
-      get { return this.BaseGet(key) as ClientElement; }
+      <span class="hljs-keyword">get</span> { <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.BaseGet(key) <span class="hljs-keyword">as</span> ClientElement; }
     }
 
-    protected override ConfigurationElement CreateNewElement()
-    {
-      return new ClientElement();
+    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">override</span> ConfigurationElement <span class="hljs-title">CreateNewElement</span><span class="hljs-params">()</span>
+    </span>{
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ClientElement();
     }
 
-    protected override object GetElementKey(ConfigurationElement element)
-    {
-      return ((ClientElement)element).Name;
+    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">object</span> <span class="hljs-title">GetElementKey</span><span class="hljs-params">(ConfigurationElement element)</span>
+    </span>{
+      <span class="hljs-keyword">return</span> ((ClientElement)element).Name;
     }
 
-    protected override bool IsElementName(string elementName)
-    {
-      return !string.IsNullOrEmpty(elementName) &amp;&amp; elementName.Equals(&quot;client&quot;);
+    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">bool</span> <span class="hljs-title">IsElementName</span><span class="hljs-params">(<span class="hljs-keyword">string</span> elementName)</span>
+    </span>{
+      <span class="hljs-keyword">return</span> !<span class="hljs-keyword">string</span>.IsNullOrEmpty(elementName) &amp;&amp; elementName.Equals(<span class="hljs-string">"client"</span>);
     }
   }
 }
@@ -126,41 +126,41 @@ public class ClientSection : ConfigurationSection
 section class. A necessary evil of .NET&#39;s configuration system.</p>
 <p>What this setup allows is to have the following in your web.config (or
 App.config if self-hosted):</p>
-<pre><code class="lang-xml">&lt;!-- [Web|App].config --&gt;
-&lt;?xml version=&quot;1.0&quot;?&gt;
-&lt;configuration&gt;
-  &lt;configSections&gt;
-    &lt;section name=&quot;apiClients&quot; type=&quot;ClientSection&quot; requirePermission=&quot;false&quot;/&gt;
-  &lt;/configSections&gt;
+<pre><code class="xml"><span class="hljs-comment">&lt;!-- [Web|App].config --&gt;</span>
+<span class="hljs-pi">&lt;?xml version="1.0"?&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">configuration</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-title">configSections</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">section</span> <span class="hljs-attribute">name</span>=<span class="hljs-value">"apiClients"</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"ClientSection"</span> <span class="hljs-attribute">requirePermission</span>=<span class="hljs-value">"false"</span>/&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-title">configSections</span>&gt;</span>
 
-  &lt;apiClients&gt;
-    &lt;clients&gt;
-      &lt;client name=&quot;Client1&quot; apiKey=&quot;somelongrandomkey&quot; /&gt;
-      &lt;client name=&quot;Client2&quot; apiKey=&quot;somelongrandomkey&quot; /&gt;
-      &lt;!-- etc --&gt;
-    &lt;/clients&gt;
-  &lt;/apiClients&gt;
-&lt;/configuration&gt;
+  <span class="hljs-tag">&lt;<span class="hljs-title">apiClients</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">clients</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">client</span> <span class="hljs-attribute">name</span>=<span class="hljs-value">"Client1"</span> <span class="hljs-attribute">apiKey</span>=<span class="hljs-value">"somelongrandomkey"</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">client</span> <span class="hljs-attribute">name</span>=<span class="hljs-value">"Client2"</span> <span class="hljs-attribute">apiKey</span>=<span class="hljs-value">"somelongrandomkey"</span> /&gt;</span>
+      <span class="hljs-comment">&lt;!-- etc --&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">clients</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-title">apiClients</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">configuration</span>&gt;</span>
 </code></pre>
 <p><em>Note</em>: The <code>&lt;configsection&gt;</code> element needs a fully qualified type name,
 so if you need to put it in a namespace, make sure to include it in
 the <code>type</code> attribute.</p>
 <p>Nice and easy client access management. All the client has to do is
 send the appropriate HTTP header. For example:</p>
-<pre><code class="lang-http">GET /json/reply/SomeRequest HTTP/1.1
-Host: api.example.com
-X-ApiKey: somelongrandomkey
+<pre><code class="http"><span class="hljs-request">GET <span class="hljs-string">/json/reply/SomeRequest</span> HTTP/1.1</span>
+<span class="hljs-attribute">Host</span>: <span class="hljs-string">api.example.com</span>
+<span class="hljs-attribute">X-ApiKey</span>: <span class="hljs-string">somelongrandomkey</span>
 </code></pre>
 <p>If you&#39;re using the C# client, then it&#39;s <code>LocalHttpWebRequestFilter</code>
 to the rescue:</p>
-<pre><code class="lang-csharp">// AuthenticatedJsonServiceClient.cs
-public class AuthenticatedJsonServiceClient : JsonServiceClient
+<pre><code class="csharp"><span class="hljs-comment">// AuthenticatedJsonServiceClient.cs</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">AuthenticatedJsonServiceClient</span> : <span class="hljs-title">JsonServiceClient</span>
 {
-  public AuthenticatedJsonServiceClient(string baseUri)
-    : base(baseUri)
-  {
-    this.LocalHttpWebRequestFilter = req =&gt; {
-      req.Headers.Add(&quot;X-ApiKey&quot;, &quot;somelongrandomkey&quot;);
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">AuthenticatedJsonServiceClient</span><span class="hljs-params">(<span class="hljs-keyword">string</span> baseUri)</span>
+    : <span class="hljs-title">base</span><span class="hljs-params">(baseUri)</span>
+  </span>{
+    <span class="hljs-keyword">this</span>.LocalHttpWebRequestFilter = req =&gt; {
+      req.Headers.Add(<span class="hljs-string">"X-ApiKey"</span>, <span class="hljs-string">"somelongrandomkey"</span>);
     };
   }
 }
@@ -171,18 +171,18 @@ and easy to manage.</p>
 <p>You can also extend the <code>ClientElement</code> class if you need more
 per-client data. For instance, I&#39;m currently selecting a connection
 string based on the ApiKey being sent over from the client:</p>
-<pre><code class="lang-csharp">// Added to the ClientElement class
-[ConfigurationProperty(&quot;connectionStringName&quot;, IsRequired = true)]
-public string ConnectionStringName
+<pre><code class="csharp"><span class="hljs-comment">// Added to the ClientElement class</span>
+[ConfigurationProperty(<span class="hljs-string">"connectionStringName"</span>, IsRequired = <span class="hljs-keyword">true</span>)]
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> ConnectionStringName
 {
-  get { return (string)base[&quot;connectionStringName&quot;]; }
-  set { base[&quot;connectionStringName&quot;] = value; }
+  <span class="hljs-keyword">get</span> { <span class="hljs-keyword">return</span> (<span class="hljs-keyword">string</span>)<span class="hljs-keyword">base</span>[<span class="hljs-string">"connectionStringName"</span>]; }
+  <span class="hljs-keyword">set</span> { <span class="hljs-keyword">base</span>[<span class="hljs-string">"connectionStringName"</span>] = <span class="hljs-keyword">value</span>; }
 }
 </code></pre>
 <p>And in web.config:</p>
-<pre><code class="lang-xml">&lt;!-- web.config --&gt;
+<pre><code class="xml"><span class="hljs-comment">&lt;!-- web.config --&gt;</span>
 ...
-&lt;client name=&quot;Client1&quot; connectionStringName=&quot;Client1DB&quot; apiKey=&quot;somelongrandomkey&quot; /&gt;
+<span class="hljs-tag">&lt;<span class="hljs-title">client</span> <span class="hljs-attribute">name</span>=<span class="hljs-value">"Client1"</span> <span class="hljs-attribute">connectionStringName</span>=<span class="hljs-value">"Client1DB"</span> <span class="hljs-attribute">apiKey</span>=<span class="hljs-value">"somelongrandomkey"</span> /&gt;</span>
 ...
 </code></pre>
 <p>Actually retrieving the value of that property per-request I&#39;ll leave
@@ -236,11 +236,11 @@ as an exercise for the reader ;)</p>
             <h2>Recent Posts<a href="/blog/">&nbsp;- more</a></h2>
             <nav class="recent">
               <ul>
+                <li><a href="/blog/2014/11/embedded-razor-that-doesnt-suck">Embedded Razor that doesn't suck</a></li>
                 <li><a href="/blog/2014/06/dark-pastels-for-osx-terminal">Dark Pastels for OSX Terminal</a></li>
                 <li><a href="/blog/2014/01/redis-i-like-you-but-youre-crazy">Redis: I like you, but you're crazy</a></li>
                 <li><a href="/blog/2013/08/dependency-injection-considered-harmful">Dependency Injection considered harmful? Not so fast.</a></li>
                 <li><a href="/blog/2013/06/ergodox-mechanical-keyboard-review">ErgoDox Mechanical Keyboard Review</a></li>
-                <li><a href="/blog/2013/03/elmah-emails-and-servicestack">Elmah, Emails, and ServiceStack</a></li>
                 <li><a href="/blog/">More...</a></li>
               </ul>
             </nav>
@@ -261,7 +261,6 @@ as an exercise for the reader ;)</p>
         </section>
       </section>
     </section>
-    <script src="/scripts/hl/highlight.pack.js"></script>
     <script type="text/javascript" src="/scripts/rossipedia.js"></script>
   </body>
 </html>

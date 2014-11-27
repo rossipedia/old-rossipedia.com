@@ -42,48 +42,48 @@ ServiceStack&#39;s request life-cycle. And since Elmah&#39;s <code>ErrorMail</co
 is implemented via an <code>HttpModule</code>, those exceptions never got a
 chance to bubble up to that module. Hence, no emails.</p>
 <p>So, how do we get around this? It&#39;s quite simple, actually:</p>
-<pre><code class="lang-csharp">// Global.asax.cs
-using System;
-using System.Reflection;
-using System.Web;
+<pre><code class="csharp"><span class="hljs-comment">// Global.asax.cs</span>
+<span class="hljs-keyword">using</span> System;
+<span class="hljs-keyword">using</span> System.Reflection;
+<span class="hljs-keyword">using</span> System.Web;
 
-using Elmah;
+<span class="hljs-keyword">using</span> Elmah;
 
-using ServiceStack.ServiceHost;
+<span class="hljs-keyword">using</span> ServiceStack.ServiceHost;
 
-public class Application : HttpApplication
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Application</span> : <span class="hljs-title">HttpApplication</span>
 {
-    private AppHost appHost;
+    <span class="hljs-keyword">private</span> AppHost appHost;
 
-    private MailModuleHandler mailHandler;
+    <span class="hljs-keyword">private</span> MailModuleHandler mailHandler;
 
-    private delegate void MailModuleHandler(Exception ex, HttpContext context);
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">delegate</span> <span class="hljs-keyword">void</span> <span class="hljs-title">MailModuleHandler</span><span class="hljs-params">(Exception ex, HttpContext context)</span></span>;
 
-    protected void Application_Start(object sender, EventArgs e)
-    {
-        // This needs to match what name is set in Web.config
-        // under system.web/httpModules, or system.webServer/modules
-        var mailModule = (ErrorMailModule)this.Modules[&quot;ErrorMail&quot;];
-        var onErrorMethod = typeof(ErrorMailModule).GetMethod(
-                &quot;OnError&quot;,
+    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Application_Start</span><span class="hljs-params">(<span class="hljs-keyword">object</span> sender, EventArgs e)</span>
+    </span>{
+        <span class="hljs-comment">// This needs to match what name is set in Web.config</span>
+        <span class="hljs-comment">// under system.web/httpModules, or system.webServer/modules</span>
+        <span class="hljs-keyword">var</span> mailModule = (ErrorMailModule)<span class="hljs-keyword">this</span>.Modules[<span class="hljs-string">"ErrorMail"</span>];
+        <span class="hljs-keyword">var</span> onErrorMethod = <span class="hljs-keyword">typeof</span>(ErrorMailModule).GetMethod(
+                <span class="hljs-string">"OnError"</span>,
                 BindingFlags.Instance | BindingFlags.NonPublic,
-                null,
-                new[] { typeof(Exception), typeof(HttpContext) },
-                null);
+                <span class="hljs-keyword">null</span>,
+                <span class="hljs-keyword">new</span>[] { <span class="hljs-keyword">typeof</span>(Exception), <span class="hljs-keyword">typeof</span>(HttpContext) },
+                <span class="hljs-keyword">null</span>);
 
-        this.mailHandler = (MailModuleHandler)onErrorMethod.CreateDelegate(
-                typeof(MailModuleHandler),
+        <span class="hljs-keyword">this</span>.mailHandler = (MailModuleHandler)onErrorMethod.CreateDelegate(
+                <span class="hljs-keyword">typeof</span>(MailModuleHandler),
                 mailModule);
 
-        this.appHost = new AppHost();
-        this.appHost.Init();
-        this.appHost.ServiceExceptionHandler = this.HandleServiceException;
+        <span class="hljs-keyword">this</span>.appHost = <span class="hljs-keyword">new</span> AppHost();
+        <span class="hljs-keyword">this</span>.appHost.Init();
+        <span class="hljs-keyword">this</span>.appHost.ServiceExceptionHandler = <span class="hljs-keyword">this</span>.HandleServiceException;
     }
 
-    private object HandleServiceException(object request, Exception ex)
-    {
-        this.mailHandler(ex, HttpContext.Current);
-        return DtoUtils.HandleException(this.appHost, request, ex);
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">object</span> <span class="hljs-title">HandleServiceException</span><span class="hljs-params">(<span class="hljs-keyword">object</span> request, Exception ex)</span>
+    </span>{
+        <span class="hljs-keyword">this</span>.mailHandler(ex, HttpContext.Current);
+        <span class="hljs-keyword">return</span> DtoUtils.HandleException(<span class="hljs-keyword">this</span>.appHost, request, ex);
     }
 }
 </code></pre>
@@ -141,11 +141,11 @@ filtering and all that good stuff.</p>
             <h2>Recent Posts<a href="/blog/">&nbsp;- more</a></h2>
             <nav class="recent">
               <ul>
+                <li><a href="/blog/2014/11/embedded-razor-that-doesnt-suck">Embedded Razor that doesn't suck</a></li>
                 <li><a href="/blog/2014/06/dark-pastels-for-osx-terminal">Dark Pastels for OSX Terminal</a></li>
                 <li><a href="/blog/2014/01/redis-i-like-you-but-youre-crazy">Redis: I like you, but you're crazy</a></li>
                 <li><a href="/blog/2013/08/dependency-injection-considered-harmful">Dependency Injection considered harmful? Not so fast.</a></li>
                 <li><a href="/blog/2013/06/ergodox-mechanical-keyboard-review">ErgoDox Mechanical Keyboard Review</a></li>
-                <li><a href="/blog/2013/03/elmah-emails-and-servicestack">Elmah, Emails, and ServiceStack</a></li>
                 <li><a href="/blog/">More...</a></li>
               </ul>
             </nav>
@@ -166,7 +166,6 @@ filtering and all that good stuff.</p>
         </section>
       </section>
     </section>
-    <script src="/scripts/hl/highlight.pack.js"></script>
     <script type="text/javascript" src="/scripts/rossipedia.js"></script>
   </body>
 </html>

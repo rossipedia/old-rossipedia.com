@@ -48,49 +48,49 @@ our purposes), I went with static methods.</p>
 Visual Studio to be run as Administrator, as opening a port requires
 elevated privileges.</p>
 <p>First, set up the AppHosts:</p>
-<pre><code class="lang-csharp">// The ASP.NET/IIS app host
-public class WebAppHost : AppHostBase
+<pre><code class="csharp"><span class="hljs-comment">// The ASP.NET/IIS app host</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">WebAppHost</span> : <span class="hljs-title">AppHostBase</span>
 {
-  private readonly string connString;
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">readonly</span> <span class="hljs-keyword">string</span> connString;
 
-  public WebAppHost()
-    : this(AppSettings.ConnectionString)
-  {
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">WebAppHost</span><span class="hljs-params">()</span>
+    : <span class="hljs-title">this</span><span class="hljs-params">(AppSettings.ConnectionString)</span>
+  </span>{
   }
 
-  public WebAppHost(string connString)
-    : base(&quot;My Service&quot;, typeof(WebAppHost).Assembly)
-  {
-    this.connString = connString;
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">WebAppHost</span><span class="hljs-params">(<span class="hljs-keyword">string</span> connString)</span>
+    : <span class="hljs-title">base</span><span class="hljs-params">(<span class="hljs-string">"My Service"</span>, <span class="hljs-keyword">typeof</span>(WebAppHost)</span>.Assembly)
+  </span>{
+    <span class="hljs-keyword">this</span>.connString = connString;
   }
 
-  public override void Configure(Container container)
-  {
-    AppHostCommon.Init(container, this.connString);
-    this.SetConfig(AppHostCommon.GetConfig());
-    this.Plugins.AddRange(AppHostCommon.GetPlugins());
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Configure</span><span class="hljs-params">(Container container)</span>
+  </span>{
+    AppHostCommon.Init(container, <span class="hljs-keyword">this</span>.connString);
+    <span class="hljs-keyword">this</span>.SetConfig(AppHostCommon.GetConfig());
+    <span class="hljs-keyword">this</span>.Plugins.AddRange(AppHostCommon.GetPlugins());
   }
 }
 
-// The Self-Host AppHost
-public class SelfAppHost : AppHostHttpListenerBase
+<span class="hljs-comment">// The Self-Host AppHost</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">SelfAppHost</span> : <span class="hljs-title">AppHostHttpListenerBase</span>
 {
-  public SelfAppHost()
-    : this(AppSettings.ConnectionString)
-  {
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">SelfAppHost</span><span class="hljs-params">()</span>
+    : <span class="hljs-title">this</span><span class="hljs-params">(AppSettings.ConnectionString)</span>
+  </span>{
   }
 
-  public SelfAppHost(string connString)
-    : base(&quot;My Service&quot;, typeof(WebAppHost).Assembly)
-  {
-    this.connString = connString;
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">SelfAppHost</span><span class="hljs-params">(<span class="hljs-keyword">string</span> connString)</span>
+    : <span class="hljs-title">base</span><span class="hljs-params">(<span class="hljs-string">"My Service"</span>, <span class="hljs-keyword">typeof</span>(WebAppHost)</span>.Assembly)
+  </span>{
+    <span class="hljs-keyword">this</span>.connString = connString;
   }
 
-  public override void Configure(Container container)
-  {
-    AppHostCommon.Init(container, this.connString);
-    this.SetConfig(AppHostCommon.GetConfig());
-    this.Plugins.AddRange(AppHostCommon.GetPlugins());
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Configure</span><span class="hljs-params">(Container container)</span>
+  </span>{
+    AppHostCommon.Init(container, <span class="hljs-keyword">this</span>.connString);
+    <span class="hljs-keyword">this</span>.SetConfig(AppHostCommon.GetConfig());
+    <span class="hljs-keyword">this</span>.Plugins.AddRange(AppHostCommon.GetPlugins());
   }
 }
 </code></pre>
@@ -101,29 +101,29 @@ completely separate problem domains, and are technically completely
 different classes (event though they look the same and fill similar
 roles).</p>
 <p>And for the AppHostCommon class:</p>
-<pre><code class="lang-csharp">public static class AppHostCommon
+<pre><code class="csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title">AppHostCommon</span>
 {
-  public static void Init(Container container, string connString)
-  {
-    container.Register&lt;IDbConnectionFactory&gt;(c =&gt; new OrmLiteDbConnectionFactory(
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Init</span><span class="hljs-params">(Container container, <span class="hljs-keyword">string</span> connString)</span>
+  </span>{
+    container.Register&lt;IDbConnectionFactory&gt;(c =&gt; <span class="hljs-keyword">new</span> OrmLiteDbConnectionFactory(
          connectionString:  connString,
-         autoDisposeConnection: true,
+         autoDisposeConnection: <span class="hljs-keyword">true</span>,
          dialectProvider: OrmLiteConfig.DialectProvider));
   }
 
-  public static EndpointHostConfig GetConfig()
-  {
-    return new EndpointHostConfig
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> EndpointHostConfig <span class="hljs-title">GetConfig</span><span class="hljs-params">()</span>
+  </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> EndpointHostConfig
     {
       EnableFeatures = Feature.All.Remove(Feature.Xml | Feature.Soap),
-      DebugMode = true,
+      DebugMode = <span class="hljs-keyword">true</span>,
       DefaultContentType = ContentType.Json
     };
   }
 
-  public static IEnumerable&lt;IPlugin&gt; GetPlugins()
-  {
-    yield return new ValidationFeature();
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> IEnumerable&lt;IPlugin&gt; <span class="hljs-title">GetPlugins</span><span class="hljs-params">()</span>
+  </span>{
+    <span class="hljs-function"><span class="hljs-keyword">yield</span> return new <span class="hljs-title">ValidationFeature</span><span class="hljs-params">()</span></span>;
   }
 }
 </code></pre>
@@ -131,32 +131,32 @@ roles).</p>
 that it&#39;s centralized out of each app host class.</p>
 <p>So what does that give us? Well, now we can do something like this
 (using NUnit to manage the integration tests):</p>
-<pre><code class="lang-csharp">[SetUpFixture]
-public class GlobalTestSetup
+<pre><code class="csharp">[SetUpFixture]
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">GlobalTestSetup</span>
 {
-  private SelfAppHost host;
+  <span class="hljs-keyword">private</span> SelfAppHost host;
 
   [SetUp]
-  public void SetUp()
-  {
-    this.SetupTestDb();
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">SetUp</span><span class="hljs-params">()</span>
+  </span>{
+    <span class="hljs-keyword">this</span>.SetupTestDb();
 
-    this.host = new SelfAppHost(TestConfig.ConnString);
-    this.host.Init();
-    this.host.Start(TestConfig.TestHostUrl);
+    <span class="hljs-keyword">this</span>.host = <span class="hljs-keyword">new</span> SelfAppHost(TestConfig.ConnString);
+    <span class="hljs-keyword">this</span>.host.Init();
+    <span class="hljs-keyword">this</span>.host.Start(TestConfig.TestHostUrl);
   }
 
   [TearDown]
-  public void TearDown()
-  {
-    this.host.Stop();
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">TearDown</span><span class="hljs-params">()</span>
+  </span>{
+    <span class="hljs-keyword">this</span>.host.Stop();
   }
 
 
-  public void SetupTestDb()
-  {
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">SetupTestDb</span><span class="hljs-params">()</span>
+  </span>{
     OrmLiteConfig.DialectProvider = SqlServerOrmLiteDialectProvider.Instance;
-    using(var db = TestConfig.ConnString.OpenDbConnection())
+    <span class="hljs-keyword">using</span>(<span class="hljs-keyword">var</span> db = TestConfig.ConnString.OpenDbConnection())
     {
       db.DropAndCreateTable&lt;SomeDTO&gt;();
     }
@@ -172,13 +172,13 @@ similar you&#39;re all good.</p>
 <p>So now, for each integration test, just make sure your service client
 uses the same base url that the SelfAppHost instance was started
 with:</p>
-<pre><code class="lang-csharp">[TestCase]
-public void ShouldDoSomethingNeat()
-{
-  var client = TestConfig.CreateServiceClient();
-  var response = client.Post(new SomeDTO());
-  // Assert various things about the response, or check the DB to
-  // ensure the DTO got inserted.
+<pre><code class="csharp">[TestCase]
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">ShouldDoSomethingNeat</span><span class="hljs-params">()</span>
+</span>{
+  <span class="hljs-keyword">var</span> client = TestConfig.CreateServiceClient();
+  <span class="hljs-keyword">var</span> response = client.Post(<span class="hljs-keyword">new</span> SomeDTO());
+  <span class="hljs-comment">// Assert various things about the response, or check the DB to</span>
+  <span class="hljs-comment">// ensure the DTO got inserted.</span>
 }
 </code></pre>
 <p>The setup might be a little tedious, but it pays off in keeping
@@ -233,11 +233,11 @@ from client to server without breaking a sweat.</p>
             <h2>Recent Posts<a href="/blog/">&nbsp;- more</a></h2>
             <nav class="recent">
               <ul>
+                <li><a href="/blog/2014/11/embedded-razor-that-doesnt-suck">Embedded Razor that doesn't suck</a></li>
                 <li><a href="/blog/2014/06/dark-pastels-for-osx-terminal">Dark Pastels for OSX Terminal</a></li>
                 <li><a href="/blog/2014/01/redis-i-like-you-but-youre-crazy">Redis: I like you, but you're crazy</a></li>
                 <li><a href="/blog/2013/08/dependency-injection-considered-harmful">Dependency Injection considered harmful? Not so fast.</a></li>
                 <li><a href="/blog/2013/06/ergodox-mechanical-keyboard-review">ErgoDox Mechanical Keyboard Review</a></li>
-                <li><a href="/blog/2013/03/elmah-emails-and-servicestack">Elmah, Emails, and ServiceStack</a></li>
                 <li><a href="/blog/">More...</a></li>
               </ul>
             </nav>
@@ -258,7 +258,6 @@ from client to server without breaking a sweat.</p>
         </section>
       </section>
     </section>
-    <script src="/scripts/hl/highlight.pack.js"></script>
     <script type="text/javascript" src="/scripts/rossipedia.js"></script>
   </body>
 </html>

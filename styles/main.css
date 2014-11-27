@@ -223,10 +223,12 @@ section.main img {
   max-width: 100%;
 }
 section.main code {
-  font-size: .8rem;
+  font-size: .85rem;
+  font-family: Consolas, Menlo, "Liberation Mono", monospace;
 }
 section.main pre code {
-  line-height: 1;
+  line-height: 1.4;
+  display: block;
 }
 section.main table {
   font-size: .8rem;
@@ -311,6 +313,9 @@ section.main div.code-desc {
 section.main pre {
   padding: .2rem .5rem;
   overflow: auto;
+}
+section.main code {
+  padding: .05rem .3rem;
 }
 section.main ul,
 section.main ol {
@@ -442,6 +447,8 @@ section.main code {
   background-color: rgba(0, 0, 0, 0.1);
   color: #006667;
   text-shadow: 0 1px #f2f2f2;
+  border: 1px solid #e1d7d1;
+  border-radius: 5px;
 }
 section.main pre {
   border: 1px solid #e1d7d1;
@@ -451,6 +458,7 @@ section.main pre {
 section.main pre code {
   text-shadow: 0 1px white;
   background-color: transparent;
+  border: none;
 }
 section.main table thead {
   border-bottom: 1px solid #dddddd;

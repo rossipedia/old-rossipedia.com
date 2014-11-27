@@ -27,16 +27,16 @@
             <time datetime="2012-12-11T07:00:00.000Z">Dec 11 2012</time><a rel="author">Bryan J. Ross</a>
           </header>
           <section class="content"><p>I ran across this lovely little interface method today:</p>
-<pre><code class="lang-csharp">public interface IOrderProcessor
+<pre><code class="csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title">IOrderProcessor</span>
 {
-  TransactionResponse CreateOrder(
+  <span class="hljs-function">TransactionResponse <span class="hljs-title">CreateOrder</span><span class="hljs-params">(
       Cart cart,
-      string email,
+      <span class="hljs-keyword">string</span> email,
       Payment payment,
       Address billingAddress,
       Address shippingAddress,
-      string notes,
-      int orderId);
+      <span class="hljs-keyword">string</span> notes,
+      <span class="hljs-keyword">int</span> orderId)</span></span>;
 }
 </code></pre>
 <!-- more -->
@@ -105,11 +105,11 @@ see how these limitations affect the way I solve problems in code.</p>
             <h2>Recent Posts<a href="/blog/">&nbsp;- more</a></h2>
             <nav class="recent">
               <ul>
+                <li><a href="/blog/2014/11/embedded-razor-that-doesnt-suck">Embedded Razor that doesn't suck</a></li>
                 <li><a href="/blog/2014/06/dark-pastels-for-osx-terminal">Dark Pastels for OSX Terminal</a></li>
                 <li><a href="/blog/2014/01/redis-i-like-you-but-youre-crazy">Redis: I like you, but you're crazy</a></li>
                 <li><a href="/blog/2013/08/dependency-injection-considered-harmful">Dependency Injection considered harmful? Not so fast.</a></li>
                 <li><a href="/blog/2013/06/ergodox-mechanical-keyboard-review">ErgoDox Mechanical Keyboard Review</a></li>
-                <li><a href="/blog/2013/03/elmah-emails-and-servicestack">Elmah, Emails, and ServiceStack</a></li>
                 <li><a href="/blog/">More...</a></li>
               </ul>
             </nav>
@@ -130,7 +130,6 @@ see how these limitations affect the way I solve problems in code.</p>
         </section>
       </section>
     </section>
-    <script src="/scripts/hl/highlight.pack.js"></script>
     <script type="text/javascript" src="/scripts/rossipedia.js"></script>
   </body>
 </html>

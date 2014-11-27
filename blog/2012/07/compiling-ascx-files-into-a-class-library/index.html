@@ -45,25 +45,25 @@ this to work. These steps assume the default install location.</p>
 System.Web.</p>
 <p>Add your control. For this example I’m just going to use the following super
 basic control (named MyControl.ascx):</p>
-<pre><code class="lang-html">&lt;%@ Control Language=&quot;C#&quot; ClassName=&quot;ControlTest.MyControl&quot;
-CodeFile=&quot;MyControl.ascx.cs&quot; Inherits=&quot;ControlTest.MyControlCode&quot;
-AutoEventWireup=&quot;true&quot; %&gt;
+<pre><code class="html"><span class="hljs-tag">&lt;<span class="hljs-title">%@</span> <span class="hljs-attribute">Control</span> <span class="hljs-attribute">Language</span>=<span class="hljs-value">"C#"</span> <span class="hljs-attribute">ClassName</span>=<span class="hljs-value">"ControlTest.MyControl"</span>
+<span class="hljs-attribute">CodeFile</span>=<span class="hljs-value">"MyControl.ascx.cs"</span> <span class="hljs-attribute">Inherits</span>=<span class="hljs-value">"ControlTest.MyControlCode"</span>
+<span class="hljs-attribute">AutoEventWireup</span>=<span class="hljs-value">"true"</span> %&gt;</span>
 
-&lt;asp:MultiView runat=&quot;server&quot; ID=&quot;mvName&quot;&gt;
-&lt;Views&gt;
-   &lt;asp:View runat=&quot;server&quot; ID=&quot;vwDisplay&quot;&gt;
-       Your name is &lt;asp:Label runat=&quot;server&quot; ID=&quot;lblName&quot; /&gt;
-       &lt;asp:Button runat=&quot;server&quot; ID=&quot;btnReset&quot;
-       OnClick=&quot;ResetButtonClick&quot; Text=&quot;Reset Name&quot; /&gt;
-   &lt;/asp:View&gt;
-   &lt;asp:View runat=&quot;server&quot; ID=&quot;vwInput&quot;&gt;
-       Enter your name: &lt;asp:TextBox runat=&quot;server&quot;
-       ID=&quot;txtName&quot;&gt;&lt;/asp:TextBox&gt;
-       &lt;asp:Button runat=&quot;server&quot; ID=&quot;btnSet&quot; OnClick=&quot;SetButtonClick&quot;
-       Text=&quot;Set Name&quot; /&gt;
-   &lt;/asp:View&gt;
-&lt;/Views&gt;
-&lt;/asp:MultiView&gt;
+<span class="hljs-tag">&lt;<span class="hljs-title">asp:MultiView</span> <span class="hljs-attribute">runat</span>=<span class="hljs-value">"server"</span> <span class="hljs-attribute">ID</span>=<span class="hljs-value">"mvName"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">Views</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-title">asp:View</span> <span class="hljs-attribute">runat</span>=<span class="hljs-value">"server"</span> <span class="hljs-attribute">ID</span>=<span class="hljs-value">"vwDisplay"</span>&gt;</span>
+       Your name is <span class="hljs-tag">&lt;<span class="hljs-title">asp:Label</span> <span class="hljs-attribute">runat</span>=<span class="hljs-value">"server"</span> <span class="hljs-attribute">ID</span>=<span class="hljs-value">"lblName"</span> /&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-title">asp:Button</span> <span class="hljs-attribute">runat</span>=<span class="hljs-value">"server"</span> <span class="hljs-attribute">ID</span>=<span class="hljs-value">"btnReset"</span>
+       <span class="hljs-attribute">OnClick</span>=<span class="hljs-value">"ResetButtonClick"</span> <span class="hljs-attribute">Text</span>=<span class="hljs-value">"Reset Name"</span> /&gt;</span>
+   <span class="hljs-tag">&lt;/<span class="hljs-title">asp:View</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-title">asp:View</span> <span class="hljs-attribute">runat</span>=<span class="hljs-value">"server"</span> <span class="hljs-attribute">ID</span>=<span class="hljs-value">"vwInput"</span>&gt;</span>
+       Enter your name: <span class="hljs-tag">&lt;<span class="hljs-title">asp:TextBox</span> <span class="hljs-attribute">runat</span>=<span class="hljs-value">"server"</span>
+       <span class="hljs-attribute">ID</span>=<span class="hljs-value">"txtName"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">asp:TextBox</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-title">asp:Button</span> <span class="hljs-attribute">runat</span>=<span class="hljs-value">"server"</span> <span class="hljs-attribute">ID</span>=<span class="hljs-value">"btnSet"</span> <span class="hljs-attribute">OnClick</span>=<span class="hljs-value">"SetButtonClick"</span>
+       <span class="hljs-attribute">Text</span>=<span class="hljs-value">"Set Name"</span> /&gt;</span>
+   <span class="hljs-tag">&lt;/<span class="hljs-title">asp:View</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">Views</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">asp:MultiView</span>&gt;</span>
 </code></pre>
 <p>Note: You’ll have to add this by selecting “Text File” as Class Library
 projects don’t give you the web control templates.</p>
@@ -77,31 +77,31 @@ we want (including the namespace). Otherwise, we’d have to resort to using
 silly things like <strong><asp:mycontrol_ascx /></strong>. And that’s just silly.</li>
 </ol>
 <p>Here’s the contents of my <strong>MyControl.ascx.cs</strong> file:</p>
-<pre><code class="lang-csharp">namespace ControlTest
+<pre><code class="csharp"><span class="hljs-keyword">namespace</span> <span class="hljs-title">ControlTest</span>
 {
-    using System;
-    using System.Web.UI;
+    <span class="hljs-keyword">using</span> System;
+    <span class="hljs-keyword">using</span> System.Web.UI;
 
-    public partial class MyControlCode : UserControl
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">partial</span> <span class="hljs-keyword">class</span> <span class="hljs-title">MyControlCode</span> : <span class="hljs-title">UserControl</span>
     {
-        public void Page_Load(object sender, EventArgs e)
-        {
-                if(!IsPostBack)
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Page_Load</span><span class="hljs-params">(<span class="hljs-keyword">object</span> sender, EventArgs e)</span>
+        </span>{
+                <span class="hljs-keyword">if</span>(!IsPostBack)
                 {
-                        this.mvName.SetActiveView(this.vwInput);
+                        <span class="hljs-keyword">this</span>.mvName.SetActiveView(<span class="hljs-keyword">this</span>.vwInput);
                 }
         }
 
-        public void SetButtonClick(object sender, EventArgs e)
-        {
-                this.lblName.Text = this.txtName.Text;
-                this.mvName.SetActiveView(this.vwDisplay);
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">SetButtonClick</span><span class="hljs-params">(<span class="hljs-keyword">object</span> sender, EventArgs e)</span>
+        </span>{
+                <span class="hljs-keyword">this</span>.lblName.Text = <span class="hljs-keyword">this</span>.txtName.Text;
+                <span class="hljs-keyword">this</span>.mvName.SetActiveView(<span class="hljs-keyword">this</span>.vwDisplay);
         }
 
-        public void ResetButtonClick(object sender, EventArgs e)
-        {
-                this.lblName.Text = string.Empty;
-                this.mvName.SetActiveView(this.vwInput);
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">ResetButtonClick</span><span class="hljs-params">(<span class="hljs-keyword">object</span> sender, EventArgs e)</span>
+        </span>{
+                <span class="hljs-keyword">this</span>.lblName.Text = <span class="hljs-keyword">string</span>.Empty;
+                <span class="hljs-keyword">this</span>.mvName.SetActiveView(<span class="hljs-keyword">this</span>.vwInput);
         }
     }
 }
@@ -112,57 +112,57 @@ then right click it again and hit “Edit [Project name]…”. This is going
 to open up the actual project file in the XML editor.</p>
 <p>Down at the bottom, right before the end <strong></Project></strong>, add the following
 targets:</p>
-<pre><code class="lang-xml">&lt;Target Name=&quot;BuildReferences&quot;&gt;
-        &lt;MSBuild Projects=&quot;@(ProjectReference)&quot; Targets=&quot;Build&quot;
-        BuildInParallel=&quot;True&quot;&gt;
-                &lt;Output TaskParameter=&quot;TargetOutputs&quot;
-                ItemName=&quot;ReferencedAssemblies&quot; /&gt;
-        &lt;/MSBuild&gt;
-&lt;/Target&gt;
-&lt;Target Name=&quot;CompileUserControls&quot; DependsOnTargets=&quot;BuildReferences&quot;
-Inputs=&quot;@(Compile);@(Content)&quot;
-Outputs=&quot;$(OutputPath)\$(AssemblyName).dll&quot;&gt;
-        &lt;PropertyGroup&gt;
-                &lt;TempDirectory&gt;$(MSBuildProjectDirectory)\temp&lt;/TempDirectory&gt;
-                &lt;ILMergeEXE&gt;$(ProgramFiles)\Microsoft\ILMerge\ILMerge.exe&lt;/ILMergeEXE&gt;
-        &lt;/PropertyGroup&gt;
-        &lt;Copy SourceFiles=&quot;@(ReferencedAssemblies)&quot;
-        DestinationFolder=&quot;$(MSBuildProjectDirectory)\bin&quot;
-        SkipUnchangedFiles=&quot;true&quot; /&gt;
-        &lt;AspNetCompiler Debug=&quot;$(DebugSymbols)&quot;
-        PhysicalPath=&quot;$(MSBuildProjectDirectory)&quot;
-        TargetPath=&quot;$(TempDirectory)&quot;
-        VirtualPath=&quot;$(MSBuildProjectDirectory)&quot; Updateable=&quot;false&quot;
-        Force=&quot;true&quot; /&gt;
-        &lt;CreateItem Include=&quot;$(TempDirectory)\bin\App_Web*.dll&quot;&gt;
-                &lt;Output ItemName=&quot;PrecompiledAssemblies&quot;
-                TaskParameter=&quot;Include&quot; /&gt;
-        &lt;/CreateItem&gt;
-        &lt;MakeDir Directories=&quot;$(OutputPath)&quot; /&gt;
-        &lt;Exec Command=&quot;&quot;$(ILMergeEXE)&quot; /union
+<pre><code class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Target</span> <span class="hljs-attribute">Name</span>=<span class="hljs-value">"BuildReferences"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">MSBuild</span> <span class="hljs-attribute">Projects</span>=<span class="hljs-value">"@(ProjectReference)"</span> <span class="hljs-attribute">Targets</span>=<span class="hljs-value">"Build"</span>
+        <span class="hljs-attribute">BuildInParallel</span>=<span class="hljs-value">"True"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">Output</span> <span class="hljs-attribute">TaskParameter</span>=<span class="hljs-value">"TargetOutputs"</span>
+                <span class="hljs-attribute">ItemName</span>=<span class="hljs-value">"ReferencedAssemblies"</span> /&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">MSBuild</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">Target</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">Target</span> <span class="hljs-attribute">Name</span>=<span class="hljs-value">"CompileUserControls"</span> <span class="hljs-attribute">DependsOnTargets</span>=<span class="hljs-value">"BuildReferences"</span>
+<span class="hljs-attribute">Inputs</span>=<span class="hljs-value">"@(Compile);@(Content)"</span>
+<span class="hljs-attribute">Outputs</span>=<span class="hljs-value">"$(OutputPath)\$(AssemblyName).dll"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">PropertyGroup</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">TempDirectory</span>&gt;</span>$(MSBuildProjectDirectory)\temp<span class="hljs-tag">&lt;/<span class="hljs-title">TempDirectory</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">ILMergeEXE</span>&gt;</span>$(ProgramFiles)\Microsoft\ILMerge\ILMerge.exe<span class="hljs-tag">&lt;/<span class="hljs-title">ILMergeEXE</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">PropertyGroup</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">Copy</span> <span class="hljs-attribute">SourceFiles</span>=<span class="hljs-value">"@(ReferencedAssemblies)"</span>
+        <span class="hljs-attribute">DestinationFolder</span>=<span class="hljs-value">"$(MSBuildProjectDirectory)\bin"</span>
+        <span class="hljs-attribute">SkipUnchangedFiles</span>=<span class="hljs-value">"true"</span> /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">AspNetCompiler</span> <span class="hljs-attribute">Debug</span>=<span class="hljs-value">"$(DebugSymbols)"</span>
+        <span class="hljs-attribute">PhysicalPath</span>=<span class="hljs-value">"$(MSBuildProjectDirectory)"</span>
+        <span class="hljs-attribute">TargetPath</span>=<span class="hljs-value">"$(TempDirectory)"</span>
+        <span class="hljs-attribute">VirtualPath</span>=<span class="hljs-value">"$(MSBuildProjectDirectory)"</span> <span class="hljs-attribute">Updateable</span>=<span class="hljs-value">"false"</span>
+        <span class="hljs-attribute">Force</span>=<span class="hljs-value">"true"</span> /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">CreateItem</span> <span class="hljs-attribute">Include</span>=<span class="hljs-value">"$(TempDirectory)\bin\App_Web*.dll"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">Output</span> <span class="hljs-attribute">ItemName</span>=<span class="hljs-value">"PrecompiledAssemblies"</span>
+                <span class="hljs-attribute">TaskParameter</span>=<span class="hljs-value">"Include"</span> /&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">CreateItem</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">MakeDir</span> <span class="hljs-attribute">Directories</span>=<span class="hljs-value">"$(OutputPath)"</span> /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">Exec</span> <span class="hljs-attribute">Command</span>=<span class="hljs-value">"&amp;quot;$(ILMergeEXE)&amp;quot; /union
         /out:$(OutputPath)\$(AssemblyName).dll /targetplatform:v4
-        @(PrecompiledAssemblies, &#39; &#39;)&quot; /&gt;
-&lt;/Target&gt;
-&lt;Target Name=&quot;Clean&quot;&gt;
-        &lt;RemoveDir Directories=&quot;$(TempDirectory)&quot; /&gt;
-        &lt;RemoveDir Directories=&quot;$(OutputPath)&quot; /&gt;
-&lt;/Target&gt;
+        @(PrecompiledAssemblies, ' ')"</span> /&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">Target</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">Target</span> <span class="hljs-attribute">Name</span>=<span class="hljs-value">"Clean"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">RemoveDir</span> <span class="hljs-attribute">Directories</span>=<span class="hljs-value">"$(TempDirectory)"</span> /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">RemoveDir</span> <span class="hljs-attribute">Directories</span>=<span class="hljs-value">"$(OutputPath)"</span> /&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">Target</span>&gt;</span>
 </code></pre>
 <p>Now, change the <strong>DefaultTargets</strong> attribute of the <strong><Project> element at the
 top of the file to have the value “CompileUserControls”. You want it to look
 like this:</strong></p>
-<pre><code class="lang-xml">&lt;Project ToolsVersion=&quot;4.0&quot; DefaultTargets=&quot;Build&quot;
-xmlns=&quot;http://schemas.microsoft.com/developer/msbuild/2003&quot;&gt;
+<pre><code class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Project</span> <span class="hljs-attribute">ToolsVersion</span>=<span class="hljs-value">"4.0"</span> <span class="hljs-attribute">DefaultTargets</span>=<span class="hljs-value">"Build"</span>
+<span class="hljs-attribute">xmlns</span>=<span class="hljs-value">"http://schemas.microsoft.com/developer/msbuild/2003"</span>&gt;</span>
 </code></pre>
 <p>Now save and close that file, right click the project in Solution Explorer,
     reload the project, and then hit “Build”. You’ll notice the build process
     takes a little longer than usual.</p>
 <p>What’s happening behind the scenes is this:</p>
 <ol>
-<li>MSBuild is calling the tool <strong>aspnet_compiler.exe</strong> to build each ascx and<pre><code>ascx.cs file into their own assemblies. This is what happens when you
-pre-compile an ASP.NET web site or web application
+<li>MSBuild is calling the tool <strong>aspnet_compiler.exe</strong> to build each ascx and<pre><code>ascx.cs <span class="hljs-type">file</span> <span class="hljs-keyword">into</span> their own assemblies. This <span class="hljs-keyword">is</span> what happens when you
+pre-compile an ASP.NET web site <span class="hljs-keyword">or</span> web <span class="hljs-type">application</span>
 </code></pre></li>
-<li>The individual assemblies are then merged using ILMerge into a single final<pre><code>assembly
+<li>The individual assemblies are then merged using ILMerge into a single final<pre><code><span class="hljs-keyword">assembly</span>
 </code></pre></li>
 <li>That assembly is placed in the output folder for the current configuration.</li>
 </ol>
@@ -177,28 +177,28 @@ happen.</p>
 <p>Now, add an empty ASP.NET Web Application to the solution, and add a project
 reference to the ControlTest (or whatever yours is called) project.</p>
 <p>This is the default.aspx file:</p>
-<pre><code class="lang-html">&lt;%@ Page Language=&quot;C#&quot; AutoEventWireup=&quot;true&quot; CodeBehind=&quot;default.aspx.cs&quot;
-Inherits=&quot;ControlTestWeb._default&quot; %&gt;
-&lt;%@ Register tagPrefix=&quot;controls&quot; namespace=&quot;ControlTest&quot;
-assembly=&quot;ControlTest&quot; %&gt;
+<pre><code class="html"><span class="hljs-tag">&lt;<span class="hljs-title">%@</span> <span class="hljs-attribute">Page</span> <span class="hljs-attribute">Language</span>=<span class="hljs-value">"C#"</span> <span class="hljs-attribute">AutoEventWireup</span>=<span class="hljs-value">"true"</span> <span class="hljs-attribute">CodeBehind</span>=<span class="hljs-value">"default.aspx.cs"</span>
+<span class="hljs-attribute">Inherits</span>=<span class="hljs-value">"ControlTestWeb._default"</span> %&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">%@</span> <span class="hljs-attribute">Register</span> <span class="hljs-attribute">tagPrefix</span>=<span class="hljs-value">"controls"</span> <span class="hljs-attribute">namespace</span>=<span class="hljs-value">"ControlTest"</span>
+<span class="hljs-attribute">assembly</span>=<span class="hljs-value">"ControlTest"</span> %&gt;</span>
 
-&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot;
-&quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
+<span class="hljs-doctype">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;</span>
 
-&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
-    &lt;head runat=&quot;server&quot;&gt;
-        &lt;title&gt;&lt;/title&gt;
-    &lt;/head&gt;
-    &lt;body&gt;
-        &lt;form id=&quot;form1&quot; runat=&quot;server&quot;&gt;
-            &lt;div&gt;
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span> <span class="hljs-attribute">xmlns</span>=<span class="hljs-value">"http://www.w3.org/1999/xhtml"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">head</span> <span class="hljs-attribute">runat</span>=<span class="hljs-value">"server"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">body</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">form</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"form1"</span> <span class="hljs-attribute">runat</span>=<span class="hljs-value">"server"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
 
-                &lt;controls:MyControl runat=&quot;server&quot; ID=&quot;myControl&quot; /&gt;
+                <span class="hljs-tag">&lt;<span class="hljs-title">controls:MyControl</span> <span class="hljs-attribute">runat</span>=<span class="hljs-value">"server"</span> <span class="hljs-attribute">ID</span>=<span class="hljs-value">"myControl"</span> /&gt;</span>
 
-            &lt;/div&gt;
-        &lt;/form&gt;
-    &lt;/body&gt;
-&lt;/html&gt;
+            <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">form</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span>
 </code></pre>
 
           </section>
@@ -248,11 +248,11 @@ assembly=&quot;ControlTest&quot; %&gt;
             <h2>Recent Posts<a href="/blog/">&nbsp;- more</a></h2>
             <nav class="recent">
               <ul>
+                <li><a href="/blog/2014/11/embedded-razor-that-doesnt-suck">Embedded Razor that doesn't suck</a></li>
                 <li><a href="/blog/2014/06/dark-pastels-for-osx-terminal">Dark Pastels for OSX Terminal</a></li>
                 <li><a href="/blog/2014/01/redis-i-like-you-but-youre-crazy">Redis: I like you, but you're crazy</a></li>
                 <li><a href="/blog/2013/08/dependency-injection-considered-harmful">Dependency Injection considered harmful? Not so fast.</a></li>
                 <li><a href="/blog/2013/06/ergodox-mechanical-keyboard-review">ErgoDox Mechanical Keyboard Review</a></li>
-                <li><a href="/blog/2013/03/elmah-emails-and-servicestack">Elmah, Emails, and ServiceStack</a></li>
                 <li><a href="/blog/">More...</a></li>
               </ul>
             </nav>
@@ -273,7 +273,6 @@ assembly=&quot;ControlTest&quot; %&gt;
         </section>
       </section>
     </section>
-    <script src="/scripts/hl/highlight.pack.js"></script>
     <script type="text/javascript" src="/scripts/rossipedia.js"></script>
   </body>
 </html>
