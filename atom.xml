@@ -2,15 +2,28 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>Rossipedia</title>
     <link>http://rossipedia.com</link>
-    <updated>2014-11-27T00:45:19Z</updated>
+    <updated>2015-02-25T18:08:23Z</updated>
     <author>
         <name>Bryan J. Ross</name>
         <email>bryan@rossipedia.com</email>
     </author>
     <link rel="alternate" href="http://rossipedia.com"/>
     <link rel="self" href="atom.xml"/>
-    <rights>2014 Bryan Ross. All rights reserved.</rights>
+    <rights>2015 Bryan Ross. All rights reserved.</rights>
     <generator>Feed for Node.js</generator>
+    <entry>
+        <title type="html"><![CDATA[Programming the Infinity Keyboard]]></title>
+        <id>http://rossipedia.com/blog/2015/02/programming-the-infinity-keyboard</id>
+        <link href="http://rossipedia.com/blog/2015/02/programming-the-infinity-keyboard">
+        </link>
+        <updated>2015-02-25T07:00:00Z</updated>
+        <summary type="html"><![CDATA[<p>I received my Infinity Keyboard kit from <a href="https://www.massdrop.com/buy/infinity-keyboard-kit?mode=guest_open">MassDrop</a> about a week ago, and
+it&#39;s taken me a while to figure out how to program it. I&#39;m going to document the
+process here both for my own future reference and in the hopes that it can help
+somebody else in the process. I will provide a more in-depth review in a later
+post.</p>
+<p><img src="http://i.imgur.com/TmojAvT.jpg?1" alt="Infinity Keyboard assembled" title="The Infinity Keyboard"></p>]]></summary>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Embedded Razor that doesn't suck]]></title>
         <id>http://rossipedia.com/blog/2014/11/embedded-razor-that-doesnt-suck</id>

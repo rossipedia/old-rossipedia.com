@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Programming the Infinity Keyboard - Rossipedia</title>
+    <link rel="shortcut icon" href="http://www.gravatar.com/avatar/74c4a12ee78a7e49b8333a6c78aae47c.png">
+    <link rel="stylesheet" type="text/css" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/hl/github.css">
+    <script type="text/javascript" src="/scripts/ender.js"></script>
+    <link rel="canonical" href="http://rossipedia.com/blog/2015/02/programming-the-infinity-keyboard">
+  </head>
+  <body>
+    <input type="checkbox" id="sidebar-checkbox" class="sidebar-checkbox">
+    <section class="wrap">
+      <section class="masthead">
+        <header role="banner" class="container">
+          <h1><a href="/">Rossipedia</a></h1>
+          <h2>Code, music, and other junk</h2>
+        </header>
+      </section>
+      <section class="main container">
+        <article>
+          <header>
+            <h1><a href="/blog/2015/02/programming-the-infinity-keyboard">Programming the Infinity Keyboard</a></h1>
+            <time datetime="2015-02-25T07:00:00.000Z">Feb 25 2015</time><a rel="author">Bryan J. Ross</a>
+          </header>
+          <section class="content"><p>I received my Infinity Keyboard kit from <a href="https://www.massdrop.com/buy/infinity-keyboard-kit?mode=guest_open">MassDrop</a> about a week ago, and
+it&#39;s taken me a while to figure out how to program it. I&#39;m going to document the
+process here both for my own future reference and in the hopes that it can help
+somebody else in the process. I will provide a more in-depth review in a later
+post.</p>
+<p><img src="http://i.imgur.com/TmojAvT.jpg?1" alt="Infinity Keyboard assembled" title="The Infinity Keyboard"></p>
+<!-- more -->
+
+<p>This guide assumes that you are on the Windows platform. While it&#39;s possible to
+do this natively on Windows, it&#39;s a bit of a pain, so we&#39;re going to go with a
+Virtual Machine based on the Ubuntu Minimal ISO/CD, since it&#39;s a super light
+weight download (40MB as opposed to a multi-gigabyte download).</p>
+<h2 id="1-prerequisite-downloads-">1. Prerequisite downloads:</h2>
+<ul>
+<li><a href="https://www.virtualbox.org/wiki/Downloads">Oracle VirtualBox</a></li>
+<li><a href="https://help.ubuntu.com/community/Installation/MinimalCD">Ubuntu Minimal ISO</a></li>
+</ul>
+<p>For each, make sure you download the correct version for your processor
+(32-bit or 64-bit).</p>
+<h2 id="2-installation">2. Installation</h2>
+<p>Okay, first off go ahead and install VirtualBox. Once that&#39;s up and running,
+you&#39;ll want to create a new Virtual Machine. Call it whatever you want (I called
+mine &quot;Keyboard Dev&quot;). Here are the specs I chose:</p>
+<p><img src="http://i.imgur.com/MzKzhJN.png" alt="Keyboard Dev VM"></p>
+<p>Attach the downloaded <code>mini.iso</code> file to the VM. This can be done by right
+clicking the VM and choosing &quot;Settings&quot;, then going to the &quot;Storage&quot; section and
+using the dropdown on the right to select the .iso file to attach to the VM&#39;s
+drive:</p>
+<p><img src="http://i.imgur.com/1w8u4iu.png" alt="Keyboard Dev VM Storage Settings"></p>
+<p>Now start up the VM!</p>
+<h2 id="3-ubuntu-setup">3. Ubuntu Setup</h2>
+<p>When the VM boots up you&#39;ll be presented with the installation menu. I&#39;m not
+going to go into the details of a full-blown Ubuntu installation, but since this
+is the Minimal ISO, anything you select for installation will need to be
+downloaded and will make the setup process slower.</p>
+<p>As I am based in the US and an English speaker, the defaults were fine for me.</p>
+<p>Note: I set the username and password both to <code>kb</code>, since this VM will solely be
+used for keyboard development. You are of course free to use whatever you wish.</p>
+<h2 id="4-ubuntu-command-line">4. Ubuntu Command Line</h2>
+<p>For the sake of simplicity, I didn&#39;t choose any software packages to install
+during setup. There is one tiny gotcha when doing this: after rebooting the
+screen will come up blank. This is because Ubuntu expects there to be a
+graphical X server and tries to hand off the session to one, but of course there
+isn&#39;t one. It&#39;s fairly easily fixed.</p>
+<ol>
+<li><p>Press <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>F1</kbd> to switch to TTY1. You
+should see a login prompt. Go ahead and login.</p>
+</li>
+<li><p>You&#39;ll see a couple messages related to <code>systemd</code>. We don&#39;t need it, so go
+ahead and nuke it:</p>
+<pre><code class="bash">$ sudo apt-get -y remove systemd
+</code></pre>
+</li>
+<li><p>Ok, now let&#39;s fix that blank startup screen. The setting we need is in the
+file <code>/etc/grub.d/10_linux</code>. Let&#39;s edit that file (I use vi, but use
+whatever editor you are most comfortable with)</p>
+<pre><code class="bash">$ sudo vi /etc/grub.d/<span class="hljs-number">10</span>_linux
+</code></pre>
+</li>
+<li><p>We need to comment out the line <code>vt_handoff=&quot;1&quot;</code>. Do this by adding a <code>#</code> to
+the beginning of that line</p>
+</li>
+</ol>
+<h2 id="5-software-packages-installation">5. Software Packages Installation</h2>
+<p>Now we can install our prerequisite software for programming the keyboard:</p>
+<pre><code class="bash">$ sudo apt-get install -y git cmake ctags python3 libusb-<span class="hljs-number">1.0</span>-<span class="hljs-number">0</span> \
+    libusb-<span class="hljs-number">1.0</span>-<span class="hljs-number">0</span>-dev make gcc-arm-none-eabi binutils-arm-none-eabi \
+    dfu-util
+</code></pre>
+<p>and clone the github repository for the controller:</p>
+<pre><code class="bash">$ git <span class="hljs-built_in">clone</span> https://github.com/kiibohd/controller.git
+$ <span class="hljs-built_in">cd</span> controller
+</code></pre>
+<h2 id="6-compile-default-layout">6. Compile default layout</h2>
+<p>Let&#39;s check to make sure we can build the default Infinity layout:</p>
+<pre><code class="bash">$ mkdir build_infinity
+$ <span class="hljs-built_in">cd</span> build_infinity
+$ cmake ..
+$ make
+</code></pre>
+<p>If all goes well, you should see a bunch of green lines scroll by, ending with
+something like this:</p>
+<pre><code class="nohighlight">         SRAM:  32%    5384/16384      bytes
+        Flash:  18%    23808/126976    bytes
+[100%] Built target SizeAfter
+</code></pre>
+<p>Hooray! Your firmware has been built.</p>
+<p>Now let&#39;s get set up for flashing</p>
+<h2 id="7-flashing-your-keyboard-s-firmware">7. Flashing your keyboard&#39;s firmware</h2>
+<p>You will need a second keyboard for this.</p>
+<p>Press the re-flash button on the bottom of your keyboard. You should see the
+orange LED light up indicating it&#39;s in DFI flashing mode.</p>
+<p>Set up a USB filter for the Kiibohd DFU Bootloader (this is the device that
+the computer sees the Infinity as when it&#39;s in re-flash mode).</p>
+<p>Go to the Settings for the VM (the VM can be running for this), and the &quot;USB&quot;
+section on the left. Then use the button on the right to add the USB filter:</p>
+<p><img src="http://i.imgur.com/mpBbQXl.png" alt="USB Filter Selection"></p>
+<p>Now whenever the VM is running and you press the re-flash button on your
+keyboard, the bootloader will connect directly to the VM and bypass the host
+machine. I find this makes things just a bit easier when tweaking layouts, as
+you don&#39;t have to constantly tell VirtualBox to connect the bootloader USB
+device to the VM manually.</p>
+<p>Back in the VM, enter the following (this is where you need another keyboard):</p>
+<pre><code class="bash">$ sudo ./load
+</code></pre>
+<p>Once you enter your password, the layout you built will be flashed on to your
+keyboard. You should see a bunch of output about communication with the DFU
+device. If you see the following line:</p>
+<pre><code class="nohighlight">state(7) = dfuMANIFEST, status(0) = No error condition is present
+</code></pre>
+<p>you&#39;re done! You have successfully built and flashed a new layout onto your
+Infinity keyboard.</p>
+<p>Next post I&#39;ll dive into KLL (Keyboard Layout Language), how it works, and
+how to come up with your own layout.</p>
+
+          </section>
+          <footer class="comments">
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+              /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+              if (/rossipedia\.com/.test(location.host)) {
+               var disqus_shortname = 'rossipedia'; // required: replace example with your forum shortname
+               //- var disqus_url = 'http://rossipedia.com/blog/2015/02/programming-the-infinity-keyboard';
+               
+               /* * * DON'T EDIT BELOW THIS LINE * * */
+               (function() {
+                 var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                 dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                 (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+               })();
+              }
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></noscript><a href="http://disqus.com" class="dsq-brlink">comments powered by<span class="logo-disqus">Disqus</span></a>
+          </footer>
+        </article>
+      </section>
+      <footer class="container">
+        <ul class="nav">
+          <li><a href="/blog/2014/11/embedded-razor-that-doesnt-suck">&lt;</a></li>
+          <li><a href="/blog/">Archives</a></li>
+          <li><a disabled="disabled">&gt;</a></li>
+        </ul><p>&copy; 2015 content and design by
+<a href="href=&quot;http://rossipedia.com&quot;">Bryan J. Ross</a></p>
+
+      </footer>
+      <section class="sidebar-wrap">
+        <label class="sidebar-toggle"></label>
+        <section class="sidebar">
+          <aside>
+            <p>Code MacGuyver @ <a href="http://stackexchange.com" target="_blank">StackExchange</a></p>
+            <p>I've been known to play and record music.</p>
+          </aside>
+          <section class="search">
+            <form action="http://google.com/search" method="get" class="search">
+              <input type="hidden" name="q" value="site:rossipedia.com">
+              <input type="text" name="q" placeholder="Search..." class="search"><span class="rss"><a href="atom.xml" title="Subscribe to the RSS feed">RSS</a></span>
+            </form>
+          </section>
+          <section>
+            <h2>Recent Posts<a href="/blog/">&nbsp;- more</a></h2>
+            <nav class="recent">
+              <ul>
+                <li><a href="/blog/2015/02/programming-the-infinity-keyboard">Programming the Infinity Keyboard</a></li>
+                <li><a href="/blog/2014/11/embedded-razor-that-doesnt-suck">Embedded Razor that doesn't suck</a></li>
+                <li><a href="/blog/2014/06/dark-pastels-for-osx-terminal">Dark Pastels for OSX Terminal</a></li>
+                <li><a href="/blog/2014/01/redis-i-like-you-but-youre-crazy">Redis: I like you, but you're crazy</a></li>
+                <li><a href="/blog/2013/08/dependency-injection-considered-harmful">Dependency Injection considered harmful? Not so fast.</a></li>
+                <li><a href="/blog/">More...</a></li>
+              </ul>
+            </nav>
+          </section>
+          <section class="stackoverflow"><a href="http://stackoverflow.com/users/115049/rossipedia"><img src="http://stackoverflow.com/users/flair/115049.png?theme=dark" width="208" height="58" alt="profile for rossipedia at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for rossipedia at Stack Overflow, Q&amp;A for professional and enthusiast programmers"></a></section>
+          <section class="github">
+            <h2><a href="http://github.com/rossipedia">@rossipedia on GitHub</a></h2>
+            <nav class="repos">
+              <ul id="gh_repos">
+                <li class="loading"><a>Status updating...</a></li>
+              </ul>
+            </nav>
+            <script type="text/javascript" src="/scripts/github.js"></script>
+          </section>
+          <section class="twitter"><a href="https://twitter.com/rossipedia" data-widget-id="381923369030934528" class="twitter-timeline">Tweets by @rossipedia</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+          </section>
+        </section>
+      </section>
+    </section>
+    <script type="text/javascript" src="/scripts/rossipedia.js"></script>
+  </body>
+</html>
